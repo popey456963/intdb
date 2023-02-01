@@ -118,6 +118,14 @@ const SearchFieldText = styled.div`
   font-size: 14px;
 `
 
+const ClickHole = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+`
+
 type Props = {
   defaultValue: string
   onSearch?: (query: string) => void
@@ -127,9 +135,6 @@ export default function Search({
   defaultValue = "",
   onSearch = () => {},
 }: Props) {
-  const [buttonSelected, setButtonSelected] = useState<number | undefined>(
-    undefined
-  )
   const [dropped, setDropped] = useState<boolean>(false)
   const [search, setSearch] = useState<string>(defaultValue)
 
@@ -139,16 +144,39 @@ export default function Search({
     {
       icon: faFireFlameCurved,
       name: "Hot",
+      onClick: () => {
+        setDropped(false)
+        setSearch("keyword:nice ")
+        onSearch("keyword:nice ")
+      },
+      isSelected: () => search.includes("keyword:nice"),
     },
     {
       icon: faTimer,
       name: "Latest",
+      onClick: () => {
+        setDropped(false)
+        setSearch("get:latest")
+        onSearch("get:latest")
+      },
+      isSelected: () => search.includes("get:latest"),
     },
     {
       icon: faDiceThree,
       name: "Random",
+      onClick: () => {
+        setDropped(false)
+        setSearch("get:random")
+        onSearch("get:random")
+      },
+      isSelected: () => search.includes("get:random"),
     },
   ]
+
+  function handleTag(tag: string) {
+    setSearch(search + (search ? " " : "") + tag + ":")
+    textInput.current?.focus()
+  }
 
   return (
     <Container>
@@ -165,9 +193,6 @@ export default function Search({
         onFocus={() => {
           setDropped(true)
         }}
-        onBlur={() => {
-          setDropped(false)
-        }}
         ref={textInput}
       />
       {search.length !== 0 && (
@@ -181,37 +206,40 @@ export default function Search({
         </CancelButton>
       )}
       {dropped && (
-        <Dropdown>
-          <Categories>
-            {buttons.map((item, index) => (
-              <Button
-                icon={item.icon}
-                key={item.name}
-                selected={buttonSelected === index}
-                onClick={() => {
-                  setButtonSelected(index)
-                }}
-              >
-                {item.name}
-              </Button>
-            ))}
-          </Categories>
-          <SearchFor>
-            <LabelText>Search for:</LabelText>
-            <SearchField>
-              <SearchFieldIcon icon={faUser} />
-              <SearchFieldText>Author</SearchFieldText>
-            </SearchField>
-            <SearchField>
-              <SearchFieldIcon icon={faKeyboard} />
-              <SearchFieldText>Keyword</SearchFieldText>
-            </SearchField>
-            <SearchField>
-              <SearchFieldIcon icon={faFingerprint} />
-              <SearchFieldText>ID</SearchFieldText>
-            </SearchField>
-          </SearchFor>
-        </Dropdown>
+        <>
+          <ClickHole onClick={() => setDropped(false)} />
+          <Dropdown>
+            <Categories>
+              {buttons.map((item, index) => (
+                <Button
+                  icon={item.icon}
+                  key={item.name}
+                  selected={item.isSelected()}
+                  onClick={() => {
+                    item.onClick()
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Categories>
+            <SearchFor>
+              <LabelText>Search for:</LabelText>
+              <SearchField onClick={() => handleTag("author")}>
+                <SearchFieldIcon icon={faUser} />
+                <SearchFieldText>Author</SearchFieldText>
+              </SearchField>
+              <SearchField onClick={() => handleTag("keyword")}>
+                <SearchFieldIcon icon={faKeyboard} />
+                <SearchFieldText>Keyword</SearchFieldText>
+              </SearchField>
+              <SearchField onClick={() => handleTag("id")}>
+                <SearchFieldIcon icon={faFingerprint} />
+                <SearchFieldText>ID</SearchFieldText>
+              </SearchField>
+            </SearchFor>
+          </Dropdown>
+        </>
       )}
     </Container>
   )

@@ -1,5 +1,4 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { OeisResponse } from 'interfaces'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import zlib from 'zlib'
 import util from 'util'

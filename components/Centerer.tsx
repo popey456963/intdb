@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: center;
   margin: 0px 40px;
   @media (max-width: 380px) {
-    margin: 0px 30px;
+    margin: 0px 15px;
   }
 `
 

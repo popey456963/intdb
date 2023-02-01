@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import qs from 'qs'
-import { OeisResponse } from 'interfaces'
+import { OeisResponse, SearchOrder } from 'interfaces'
 
 const pause = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
 
@@ -12,7 +12,9 @@ export async function oeisFetcher(url: string) {
         .then(res => res.json())
 }
 
-export function useGetOeisQuery(q?: string, start: number = 0) {
+
+
+export function useGetOeisQuery(q?: string, order: SearchOrder = SearchOrder.Relevance, start: number = 0) {
     const query = qs.stringify({
         q, start
     })
@@ -20,14 +22,14 @@ export function useGetOeisQuery(q?: string, start: number = 0) {
     return useSWR<OeisResponse>(q ? `api/search?${query}` : null, oeisFetcher)
 }
 
-export function useGetOeisQueryInfinite(q?: string) {
+export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOrder.Relevance) {
     function oeisInfiniteKey(index: number, previous: OeisResponse) {
         if (previous && previous.count <= index * 10) {
             return null
         }
 
         const query = qs.stringify({
-            q, start: index * 10
+            q, sort, start: index * 10
         })
 
         return `api/search?${query}`

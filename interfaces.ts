@@ -11,6 +11,7 @@ export interface Entry {
     revision: number
 
     offset?: string
+    id?: string
 
     example?: Array<string>
     link?: Array<string>
@@ -31,4 +32,20 @@ export interface OeisResponse {
     start: number
 
     results: Array<Entry> | null
+}
+
+export enum SearchOrder {
+    Relevance = 'relevance',
+    References = 'references',
+    Number = 'number',
+    Modified = 'modified',
+    Created = 'created'
+}
+
+export const searchOrderOptions = {
+    relevance: 'Relevance',
+    references: 'References',
+    number: 'Number',
+    modified: 'Modified',
+    created: 'Created',
 }

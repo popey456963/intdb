@@ -10,8 +10,9 @@ import NavLinks from "components/NavLinks"
 import Logo from "components/Logo"
 import Card from "components/Card"
 
-import { useGetOeisQuery, useGetOeisQueryInfinite } from "data/oeis"
+import { useGetOeisQueryInfinite } from "data/oeis"
 import theme from "styles/theme"
+import { SearchOrder, searchOrderOptions } from "interfaces"
 
 const Container = styled.div``
 
@@ -51,15 +52,13 @@ const Loader = styled(GridLoader)`
   margin: auto;
 `
 
-// const Background = styled.div``
-
 const PAGE_SIZE = 10
 
 const Home: NextPage = () => {
   const [query, setQuery] = useState<string | undefined>("id:A000055")
-  // const { data, isLoading, error } = useGetOeisQuery(query)
+  const [sort, setSort] = useState<string>("relevance")
   const { data, size, setSize, isLoading, isValidating } =
-    useGetOeisQueryInfinite(query)
+    useGetOeisQueryInfinite(query, sort as SearchOrder)
 
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === "undefined")
@@ -94,7 +93,7 @@ const Home: NextPage = () => {
   return (
     <Container>
       <Head>
-        <title>Online Encyclopedia of Integer Sequences</title>
+        <title>Online Encyclopaedia of Integer Sequences</title>
         <meta
           name="description"
           content={
@@ -109,7 +108,18 @@ const Home: NextPage = () => {
             <Search defaultValue="id:A000055" onSearch={onSearch} />
             <NavLinks />
             <SearchMeta>
-              <div />
+              <select
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value)
+                }}
+              >
+                {Object.entries(searchOrderOptions).map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
               {data && !isEmpty && (
                 <Results>
                   {data[0].count} result{data[0].count !== 1 ? "s" : ""} found

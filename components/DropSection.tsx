@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faPresentationScreen,
   faChevronDown,
+  faChevronRight,
 } from "@fortawesome/pro-solid-svg-icons"
 import React, { useState } from "react"
 
@@ -72,7 +73,7 @@ export default function DropSection({
       >
         {icon && <Icon icon={icon} />}
         <Name>{name}</Name>
-        <DropArrow icon={faChevronDown} />
+        <DropArrow icon={dropped ? faChevronDown : faChevronRight} />
       </Header>
       <Content dropped={dropped}>{children}</Content>
     </Container>

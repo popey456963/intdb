@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { OeisResponse } from 'interfaces'
+import { OeisResponse, searchOrderOptions } from 'interfaces'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
 
@@ -11,10 +11,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<OeisResponse | Error>
 ) {
-  const { q, start } = req.query
+  const { q, start, sort } = req.query
 
   if (Array.isArray(q) || q === undefined) {
     return res.status(400).json({ error: 'No query' })
+  }
+
+  if (sort && (Array.isArray(sort) || !Object.keys(searchOrderOptions).includes(sort))) {
+    return res.status(400).json({ error: 'Invalid sort' })
   }
 
   const startNumber = Number(start || '0')
@@ -25,6 +29,7 @@ export default async function handler(
 
   const data = await fetch(`https://oeis.org/search?${qs.stringify({
     q,
+    sort,
     start: startNumber,
     fmt: 'json',
   })}`)

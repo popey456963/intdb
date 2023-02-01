@@ -46,8 +46,10 @@ export function parseProgramString(program: Array<string>) {
             }
         } else {
             current.code.push(line)
-        }
     }
+    }
+
+    programs.push(current)
 
     return programs.filter((program) => program.code.length)
 }

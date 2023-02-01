@@ -13,7 +13,7 @@ export default function Logo() {
   return (
     <LogoImage
       src={title}
-      alt="OEIS: Online Encyclopedia of Integer Sequences"
+      alt="OEIS: Online Encyclopaedia of Integer Sequences"
     />
   )
 }

@@ -26,12 +26,12 @@ const theme = {
   },
   queries: {
     mainWidth: `
-      width: 700px;
+      width: 800px;
       @media (max-width: 1000px) {
-        width: 600px;
+        width: 100%;
       }
       @media (max-width: 550px) {
-        width: 300px;
+        width: 100%;
       }`,
   },
 }

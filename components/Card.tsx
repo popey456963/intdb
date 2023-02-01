@@ -6,12 +6,17 @@ import {
   faAsterisk,
   faFunction,
   faBinary,
+  faLink,
+  faAnglesRight,
+  faCircle,
+  faCircleInfo,
 } from "@fortawesome/pro-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Entry } from "interfaces"
 import DropSection from "components/DropSection"
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
+import { atelierDuneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs"
 import { getHighlightLanguage, parseProgramString } from "utils/program"
 
 const Container = styled.div`
@@ -176,7 +181,38 @@ function CodeDisplay({
   }
 
   programs = [...programs, ...parseProgramString(program)]
+  console.log(atelierDuneDark)
 
+  atelierDuneDark["hljs-name"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-variable"] = { color: "#045FFE" }
+
+  atelierDuneDark["hljs-attribute"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-built_in "] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-builtin-name"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-bullet"] = { color: "#60ac39" }
+  atelierDuneDark["hljs-comment"] = { color: "#5692FC" }
+  atelierDuneDark["hljs-emphasis"] = { fontStyle: "italic" }
+  atelierDuneDark["hljs-keyword"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-link"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-literal"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-meta"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-name"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-number"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-params"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-quote"] = { color: "#5692FC" }
+  atelierDuneDark["hljs-regexp"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-section"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-selector-class"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-selector-id"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-selector-tag"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-string"] = { color: "#60ac39" }
+  atelierDuneDark["hljs-strong"] = { fontWeight: "bold" }
+  atelierDuneDark["hljs-symbol"] = { color: "#60ac39" }
+  atelierDuneDark["hljs-tag"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-template-variable"] = { color: "#8891FF" }
+  atelierDuneDark["hljs-title"] = { color: "#045FFE" }
+  atelierDuneDark["hljs-type"] = { color: "rgb(64 181 81)" }
+  atelierDuneDark["hljs-variable"] = { color: "#8891FF" }
   return (
     <>
       {programs.map((program, index) => (
@@ -184,6 +220,15 @@ function CodeDisplay({
           key={index}
           language={getHighlightLanguage(program.language)}
           wrapLongLines={true}
+          style={atelierDuneDark}
+          customStyle={{
+            background:
+              "linear-gradient(225deg, rgba(8,6,16,1) 0%, rgba(26,24,52,1) 100%)",
+            color: "rgb(129 125 162)",
+            fontFamily: "Roboto Mono",
+            padding: "32px",
+            borderRadius: "14px",
+          }}
         >
           {program.code.join("\n")}
         </SyntaxHighlighter>
@@ -192,8 +237,29 @@ function CodeDisplay({
   )
 }
 
+const cardProperties: Array<keyof Entry> = [
+  "example",
+  "link",
+  "formula",
+  "maple",
+  "mathematica",
+  "program",
+  "xref",
+  "ext",
+  "comment",
+  "reference",
+]
+
 export default function Card({ card, query }: { card: Entry; query?: string }) {
   const [dropped, setDropped] = useState(false)
+
+  const cardSize = cardProperties.reduce(
+    (sum, parameter) =>
+      sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
+    0
+  )
+  const defaultDropped = cardSize < 20
+  console.log(defaultDropped)
 
   return (
     <Container>
@@ -228,29 +294,31 @@ export default function Card({ card, query }: { card: Entry; query?: string }) {
           </DropSection>
         )}
         {card.comment && (
-          <DropSection icon={faComment} name={"Comment"}>
+          <DropSection
+            icon={faComment}
+            name={"Comment"}
+            defaultDropped={defaultDropped}
+          >
             {card.comment?.map((line, index) => (
               <Monospace key={index}>{line}</Monospace>
             ))}
           </DropSection>
         )}
-        {card.reference && (
-          <DropSection
-            icon={faAsterisk}
-            name={`References (${card.references})`}
-          >
-            {card.reference?.map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </DropSection>
-        )}
         {card.formula && (
-          <DropSection icon={faFunction} name={"Formula"}>
+          <DropSection
+            icon={faFunction}
+            name={"Formula"}
+            defaultDropped={defaultDropped}
+          >
             <Monospace>{card.formula}</Monospace>
           </DropSection>
         )}
         {dropped && card.program && (
-          <DropSection icon={faBinary} name={"Programs"}>
+          <DropSection
+            icon={faBinary}
+            name={"Programs"}
+            defaultDropped={defaultDropped}
+          >
             <CodeDisplay
               program={card.program}
               maple={card.maple}
@@ -258,6 +326,56 @@ export default function Card({ card, query }: { card: Entry; query?: string }) {
             />
           </DropSection>
         )}
+        {card.reference && (
+          <DropSection
+            icon={faAsterisk}
+            name={`References (${card.references})`}
+            defaultDropped={defaultDropped}
+          >
+            {card.reference?.map((line, index) => (
+              <Monospace key={index}>{line}</Monospace>
+            ))}
+          </DropSection>
+        )}
+        {card.link && (
+          <DropSection
+            icon={faLink}
+            name={"Links"}
+            defaultDropped={defaultDropped}
+          >
+            <Monospace>{card.link}</Monospace>
+          </DropSection>
+        )}
+        {card.xref && (
+          <DropSection
+            icon={faAsterisk}
+            name={"Cross References"}
+            defaultDropped={defaultDropped}
+          >
+            <Monospace>{card.xref}</Monospace>
+          </DropSection>
+        )}
+        {card.ext && (
+          <DropSection
+            icon={faAnglesRight}
+            name={"Extensions"}
+            defaultDropped={defaultDropped}
+          >
+            <Monospace>{card.ext}</Monospace>
+          </DropSection>
+        )}
+        <DropSection
+          icon={faCircleInfo}
+          name={"Meta Information"}
+          defaultDropped={defaultDropped}
+        >
+          {card.id && <Monospace>Formerly known as {card.id}</Monospace>}
+          <Monospace>Keyword: {card.keyword}</Monospace>
+          <Monospace>Author: {card.author}</Monospace>
+          <Monospace>Updated: {card.time}</Monospace>
+          <Monospace>Created: {card.created}</Monospace>
+          <Monospace>Revision: {card.revision}</Monospace>
+        </DropSection>
       </FullContent>
       <Expander onClick={() => setDropped(!dropped)}>
         <ExpandChevron icon={faChevronDown} dropped={dropped} />
