@@ -197,65 +197,67 @@ export default function Search({
   }
 
   return (
-    <Container>
-      <Mag icon={faMagnifyingGlass} />
-      <Form onSubmit={onSubmit}>
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onFocus={() => {
-            setDropped(true)
-          }}
-          ref={textInput}
-        />
-        <HiddenInput type="submit" value="Submit" />
-      </Form>
-      {search.length !== 0 && (
-        <CancelButton
-          onClick={() => {
-            setSearch("")
-            textInput?.current?.focus()
-          }}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </CancelButton>
-      )}
-      {dropped && (
-        <>
-          <ClickHole onClick={() => setDropped(false)} />
-          <Dropdown>
-            <Categories>
-              {buttons.map((item, index) => (
-                <Button
-                  icon={item.icon}
-                  key={item.name}
-                  selected={item.isSelected()}
-                  onClick={() => {
-                    item.onClick()
-                  }}
-                >
-                  {item.name}
-                </Button>
-              ))}
-            </Categories>
-            <SearchFor>
-              <LabelText>Search for:</LabelText>
-              <SearchField onClick={() => handleTag("author")}>
-                <SearchFieldIcon icon={faUser} />
-                <SearchFieldText>Author</SearchFieldText>
-              </SearchField>
-              <SearchField onClick={() => handleTag("keyword")}>
-                <SearchFieldIcon icon={faKeyboard} />
-                <SearchFieldText>Keyword</SearchFieldText>
-              </SearchField>
-              <SearchField onClick={() => handleTag("id")}>
-                <SearchFieldIcon icon={faFingerprint} />
-                <SearchFieldText>ID</SearchFieldText>
-              </SearchField>
-            </SearchFor>
-          </Dropdown>
-        </>
-      )}
-    </Container>
+    <>
+      {dropped && <ClickHole onClick={() => setDropped(false)} />}
+      <Container>
+        <Mag icon={faMagnifyingGlass} />
+        <Form onSubmit={onSubmit}>
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => {
+              setDropped(true)
+            }}
+            ref={textInput}
+          />
+          <HiddenInput type="submit" value="Submit" />
+        </Form>
+        {search.length !== 0 && (
+          <CancelButton
+            onClick={() => {
+              setSearch("")
+              textInput?.current?.focus()
+            }}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </CancelButton>
+        )}
+        {dropped && (
+          <>
+            <Dropdown>
+              <Categories>
+                {buttons.map((item, index) => (
+                  <Button
+                    icon={item.icon}
+                    key={item.name}
+                    selected={item.isSelected()}
+                    onClick={() => {
+                      item.onClick()
+                    }}
+                  >
+                    {item.name}
+                  </Button>
+                ))}
+              </Categories>
+              <SearchFor>
+                <LabelText>Search for:</LabelText>
+                <SearchField onClick={() => handleTag("author")}>
+                  <SearchFieldIcon icon={faUser} />
+                  <SearchFieldText>Author</SearchFieldText>
+                </SearchField>
+                <SearchField onClick={() => handleTag("keyword")}>
+                  <SearchFieldIcon icon={faKeyboard} />
+                  <SearchFieldText>Keyword</SearchFieldText>
+                </SearchField>
+                <SearchField onClick={() => handleTag("id")}>
+                  <SearchFieldIcon icon={faFingerprint} />
+                  <SearchFieldText>ID</SearchFieldText>
+                </SearchField>
+              </SearchFor>
+            </Dropdown>
+          </>
+        )}
+      </Container>
+    </>
   )
 }
