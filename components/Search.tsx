@@ -21,6 +21,7 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   background: white;
+  z-index: 1;
 `
 
 const Input = styled.input`
@@ -187,6 +188,7 @@ export default function Search({
         onKeyDown={(e) => {
           if (e.keyCode == 13) {
             onSearch(search)
+            setDropped(false)
             textInput?.current?.blur()
           }
         }}
