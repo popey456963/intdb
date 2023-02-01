@@ -171,7 +171,12 @@ export default function Search({
         ref={textInput}
       />
       {search.length !== 0 && (
-        <CancelButton onClick={() => setSearch("")}>
+        <CancelButton
+          onClick={() => {
+            setSearch("")
+            textInput?.current?.focus()
+          }}
+        >
           <FontAwesomeIcon icon={faTimes} />
         </CancelButton>
       )}

@@ -1,38 +1,132 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/popey456963/pretty-oeis">
+    <img src="public/title.svg" alt="Logo" width="320">
+  </a>
+
+  <p align="center">
+    <a href="https://example.com">View Demo</a>
+    ·
+    <a href="https://github.com/popey456963/pretty-oeis/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/popey456963/pretty-oeis/issues">Request Feature</a>
+    ·
+    <a href="https://github.com/popey456963/pretty-oeis/wiki/Changelog">Changelog</a>
+  </p>
+</p>
+
+<!-- TABLE OF CONTENTS -->
+
+## Table of Contents
+
+- [About the Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
+
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+[![Web File Uploader Screenshot][product-screenshot]](https://example.com)
+
+A conventional dictionary is a collection of words, together with explanations of their meanings, hints for their pronunciation, pictures illustrating particular words, examples showing how the words have been used in books and newspapers, and so on.
+
+The OEIS is a collection of sequences of numbers (such as 1, 2, 4, 8, 16, 32, 64, 128, …) together with, for each sequence, a list of items such as:
+
+- The first 10, or 10,000, or sometimes 500,000 terms of the sequence
+- A definition or description of the sequence
+- Comments explaining further properties of the sequence
+- Formulas for generating the sequence
+- Computer programs for generating the sequence
+- References to books and articles where the sequence has appeared
+- Links to web pages on the Internet where the sequence has appeared
+
+The OEIS stores over 350,000 entries as of 2023, and is growing rapidly. These sequences come from many sources - books, journals, articles, letters and emails from thousands of contributors.
+
+### Built With
+
+- [Node](https://nodejs.org)
+- [NextJS](https://nextjs.org/)
+
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
-First, run the development server:
+This guide assumes you have `git`, `node` and `npm` installed. No other dependencies are required.
 
 ```bash
+git clone https://github.com/popey456963/pretty-oeis && cd pretty-oeis
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- ROADMAP -->
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Roadmap
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+See the [open issues](https://github.com/popey456963/pretty-oeis/issues) for a list of proposed features (and known issues).
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<!-- CONTRIBUTING -->
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contributing
 
-## Learn More
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-To learn more about Next.js, take a look at the following resources:
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<!-- LICENSE -->
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+Distributed under the MIT License. See `LICENSE` for more information.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<!-- CONTACT -->
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contact
+
+Alexander Craggs - oeis@femto.dev
+Tom Emmerson - tom@carefully.codes
+
+Project Link: [https://github.com/popey456963/pretty-oeis](https://github.com/popey456963/pretty-oeis)
+
+<!-- ACKNOWLEDGEMENTS -->
+
+## Acknowledgements
+
+- [Img Shields](https://shields.io)
+- [Choose an Open Source License](https://choosealicense.com)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/popey456963/pretty-oeis.svg?style=flat-square
+[contributors-url]: https://github.com/popey456963/pretty-oeis/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/popey456963/pretty-oeis.svg?style=flat-square
+[forks-url]: https://github.com/popey456963/pretty-oeis/network/members
+[chat-shield]: https://img.shields.io/discord/493418312714289158?style=flat-square
+[stars-shield]: https://img.shields.io/github/stars/popey456963/pretty-oeis.svg?style=flat-square
+[stars-url]: https://github.com/popey456963/pretty-oeis/stargazers
+[issues-shield]: https://img.shields.io/github/issues/popey456963/pretty-oeis.svg?style=flat-square
+[issues-url]: https://github.com/popey456963/pretty-oeis/issues
+[license-shield]: https://img.shields.io/github/license/popey456963/pretty-oeis.svg?style=flat-square
+[license-url]: https://github.com/popey456963/pretty-oeis/blob/master/LICENSE.txt
+[product-screenshot]: public/screenshot.png

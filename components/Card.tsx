@@ -159,17 +159,23 @@ function CodeDisplay({
   maple?: Array<string>
   mathematica?: Array<string>
 }) {
-  const programs = [
-    {
+  let programs = []
+
+  if (maple) {
+    programs.push({
       language: "maple",
       code: maple,
-    },
-    {
+    })
+  }
+
+  if (mathematica) {
+    programs.push({
       language: "mathematica",
       code: mathematica,
-    },
-    ...parseProgramString(program),
-  ]
+    })
+  }
+
+  programs = [...programs, ...parseProgramString(program)]
 
   return (
     <>
