@@ -188,7 +188,7 @@ export default function Search({
     textInput.current?.focus()
   }
 
-  function onSubmit(e) {
+  function onSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
 
     onSearch(search)
