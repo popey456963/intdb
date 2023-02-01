@@ -31,6 +31,7 @@ const Input = styled.input`
   outline: None;
   font-size: 16px;
   height: 40px;
+  width: 100%;
 `
 
 const Mag = styled(FontAwesomeIcon)`
@@ -127,6 +128,10 @@ const ClickHole = styled.div`
   left: 0px;
 `
 
+const Form = styled.form`
+  width: 100%;
+`
+
 type Props = {
   defaultValue: string
   onSearch?: (query: string) => void
@@ -179,24 +184,27 @@ export default function Search({
     textInput.current?.focus()
   }
 
+  function onSubmit(e) {
+    e.preventDefault()
+
+    onSearch(search)
+    setDropped(false)
+    textInput?.current?.blur()
+  }
+
   return (
     <Container>
       <Mag icon={faMagnifyingGlass} />
-      <Input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onKeyUp={(e) => {
-          if (e.key === "Enter") {
-            onSearch(search)
-            setDropped(false)
-            textInput?.current?.blur()
-          }
-        }}
-        onFocus={() => {
-          setDropped(true)
-        }}
-        ref={textInput}
-      />
+      <Form onSubmit={onSubmit}>
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onFocus={() => {
+            setDropped(true)
+          }}
+          ref={textInput}
+        />
+      </Form>
       {search.length !== 0 && (
         <CancelButton
           onClick={() => {
