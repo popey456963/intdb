@@ -130,7 +130,7 @@ export default function Search({
   const [buttonSelected, setButtonSelected] = useState<number | undefined>(
     undefined
   )
-  const [dropped, setDropped] = useState<boolean>(true)
+  const [dropped, setDropped] = useState<boolean>(false)
   const [search, setSearch] = useState<string>(defaultValue)
 
   const textInput = useRef<any>(null)
