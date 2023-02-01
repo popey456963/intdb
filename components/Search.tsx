@@ -132,6 +132,10 @@ const Form = styled.form`
   width: 100%;
 `
 
+const HiddenInput = styled.input`
+  display: none;
+`
+
 type Props = {
   defaultValue: string
   onSearch?: (query: string) => void
@@ -204,6 +208,7 @@ export default function Search({
           }}
           ref={textInput}
         />
+        <HiddenInput type="submit" value="Submit" />
       </Form>
       {search.length !== 0 && (
         <CancelButton
