@@ -103,7 +103,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Alexander Craggs - oeis@femto.dev
+Alexander Craggs - oeis@femto.dev  
 Tom Emmerson - tom@carefully.codes
 
 Project Link: [https://github.com/popey456963/pretty-oeis](https://github.com/popey456963/pretty-oeis)
