@@ -45,9 +45,15 @@ const CancelButton = styled.button`
   cursor: pointer;
   outline: inherit;
   color: ${(props) => props.theme.colors.coreGrey};
+  border: 1px solid white;
 
   &:focus {
     border: inherit;
+  }
+
+  transition: all 0.1s;
+  &:hover {
+    border: 1px solid gainsboro;
   }
 `
 
@@ -71,6 +77,7 @@ const Categories = styled.div`
   border-top: 1px solid ${(props) => props.theme.colors.border};
   padding: 14px 23px;
   grid-gap: 15px;
+  flex-wrap: wrap;
 `
 
 const SearchFor = styled.div`
@@ -94,7 +101,7 @@ const SearchField = styled.div`
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    background: #f9f9f9;
+    background: ${(props) => props.theme.colors.lightGrey};
   }
 `
 
@@ -112,15 +119,19 @@ const SearchFieldText = styled.div`
 `
 
 type Props = {
+  defaultValue: string
   onSearch?: (query: string) => void
 }
 
-export default function Search({ onSearch = () => {} }: Props) {
+export default function Search({
+  defaultValue = "",
+  onSearch = () => {},
+}: Props) {
   const [buttonSelected, setButtonSelected] = useState<number | undefined>(
     undefined
   )
-  const [dropped, setDropped] = useState<boolean>(false)
-  const [search, setSearch] = useState<string>("")
+  const [dropped, setDropped] = useState<boolean>(true)
+  const [search, setSearch] = useState<string>(defaultValue)
 
   const textInput = useRef<any>(null)
 

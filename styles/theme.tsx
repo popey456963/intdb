@@ -4,7 +4,8 @@ const theme = {
     black: "#121129",
     greyText: "#c6c5d1",
     border: "#EDEDED",
-    coreGrey: "#9EA1AC",
+    coreGrey: "#74767d",
+    lightGrey: "#f9f9f9",
   },
   fonts: {
     primaryFont: `font-family: erbaum, sans-serif;`,

@@ -2,7 +2,6 @@ export interface Entry {
     number: number
     data: string
     name: string
-    example: string
     keyword: string
     author: string
     time: string
@@ -13,7 +12,7 @@ export interface Entry {
 
     offset?: string
 
-
+    example?: Array<string>
     link?: Array<string>
     formula?: Array<string>
     maple?: Array<string>
@@ -21,8 +20,8 @@ export interface Entry {
     program?: Array<string>
     xref?: Array<string>
     ext?: Array<string>
-
-
+    comment?: Array<string>
+    reference?: Array<string>
 }
 
 export interface OeisResponse {

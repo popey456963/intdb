@@ -15,7 +15,9 @@ export default function NavLinks() {
       {" | "}
       <Link href="https://oeis.org/webcam">Webcam</Link>
       {" | "}
-      <Link href="/legal">Privacy and Legal</Link>
+      <Link href="https://oeis.org/wiki/Legal_Documents">
+        Privacy and Legal
+      </Link>
     </Container>
   )
 }

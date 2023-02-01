@@ -24,7 +24,7 @@ export default async function handler(
   const decoder = new TextDecoder("utf-8")
   const recent = decoder.decode(await deflate(data)).split('\n')
 
-  const recentIds = new Set()
+  const recentIds = new Set<string>()
   for (let line of recent) {
     if (line.startsWith('# ')) continue
     
