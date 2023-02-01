@@ -185,8 +185,8 @@ export default function Search({
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.keyCode == 13) {
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
             onSearch(search)
             setDropped(false)
             textInput?.current?.blur()

@@ -3,16 +3,10 @@ import useSWRInfinite from 'swr/infinite'
 import qs from 'qs'
 import { OeisResponse, SearchOrder } from 'interfaces'
 
-const pause = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
-
 export async function oeisFetcher(url: string) {
-    await pause(200)
-
     return fetch(url)
         .then(res => res.json())
 }
-
-
 
 export function useGetOeisQuery(q?: string, order: SearchOrder = SearchOrder.Relevance, start: number = 0) {
     const query = qs.stringify({
