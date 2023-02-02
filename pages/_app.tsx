@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app"
 import Script from "next/script"
 import { ThemeProvider } from "styled-components"
+import { Analytics } from "@vercel/analytics/react"
 
 import "styles/globals.css"
 import theme from "styles/theme"
@@ -14,6 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
+      <Analytics />
     </>
   )
 }
