@@ -16,6 +16,10 @@ export function useGetOeisQuery(q?: string, order: SearchOrder = SearchOrder.Rel
     return useSWR<OeisResponse>(q ? `api/search?${query}` : null, oeisFetcher)
 }
 
+export function useGetLatest() {
+
+}
+
 export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOrder.Relevance) {
     function oeisInfiniteKey(index: number, previous: OeisResponse) {
         if (previous && previous.count <= index * 10) {
@@ -23,7 +27,7 @@ export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOr
         }
 
         const query = qs.stringify({
-            q, sort, start: index * 10
+            sort, q, start: index * 10
         })
 
         return `api/search?${query}`

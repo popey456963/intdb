@@ -208,7 +208,9 @@ export default function Search({
             onFocus={() => {
               setDropped(true)
             }}
+            placeholder="e.g 0,1,1,2,3..."
             ref={textInput}
+            aria-label="Search query"
           />
           <HiddenInput type="submit" value="Submit" />
         </Form>
@@ -218,6 +220,7 @@ export default function Search({
               setSearch("")
               textInput?.current?.focus()
             }}
+            aria-label="Clear search box"
           >
             <FontAwesomeIcon icon={faTimes} />
           </CancelButton>

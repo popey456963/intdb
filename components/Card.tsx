@@ -60,6 +60,7 @@ const Values = styled.p`
   font-family: "Roboto Mono", sans-serif;
   font-size: 14px;
   color: ${(props) => props.theme.colors.coreGrey};
+  white-space: pre-wrap;
 `
 
 const Bold = styled.span`
@@ -101,6 +102,10 @@ const Monospace = styled.pre`
   word-wrap: break-word;
   font-family: "roboto mono";
   margin: 2px 0px;
+
+  a {
+    color: ${(props) => props.theme.colors.primary};
+  }
 `
 
 const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: boolean }>`
@@ -250,8 +255,16 @@ const cardProperties: Array<keyof Entry> = [
   "reference",
 ]
 
-export default function Card({ card, query }: { card: Entry; query?: string }) {
-  const [dropped, setDropped] = useState(false)
+export default function Card({
+  card,
+  query,
+  defaultExpanded,
+}: {
+  card: Entry
+  query?: string
+  defaultExpanded?: boolean
+}) {
+  const [dropped, setDropped] = useState(defaultExpanded || false)
 
   const cardSize = cardProperties.reduce(
     (sum, parameter) =>
@@ -259,7 +272,6 @@ export default function Card({ card, query }: { card: Entry; query?: string }) {
     0
   )
   const defaultDropped = cardSize < 20
-  console.log(defaultDropped)
 
   return (
     <Container>
@@ -271,9 +283,13 @@ export default function Card({ card, query }: { card: Entry; query?: string }) {
         <Misc>
           <ID>A{String(card.number).padStart(6, "0")}</ID>
           <ProgIcons>
-            {card.program && <ProgIcon src={"/code.svg"} />}
-            {card.maple && <ProgIcon src={"/maple.svg"} />}
-            {card.mathematica && <ProgIcon src={"/mathmatica.svg"} />}
+            {card.program && <ProgIcon src={"/code.svg"} alt="Has program" />}
+            {card.maple && (
+              <ProgIcon src={"/maple.svg"} alt="Has Maple program" />
+            )}
+            {card.mathematica && (
+              <ProgIcon src={"/mathmatica.svg"} alt="Has Mathematica program" />
+            )}
           </ProgIcons>
         </Misc>
         <Title>{card.name}</Title>
@@ -343,7 +359,9 @@ export default function Card({ card, query }: { card: Entry; query?: string }) {
             name={"Links"}
             defaultDropped={defaultDropped}
           >
-            <Monospace>{card.link}</Monospace>
+            <Monospace
+              dangerouslySetInnerHTML={{ __html: card.link.join("\n") }}
+            />
           </DropSection>
         )}
         {card.xref && (

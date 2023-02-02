@@ -1,5 +1,12 @@
-import Document, { DocumentContext, DocumentInitialProps, Html, Head, Main, NextScript } from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from "next/document"
+import { ServerStyleSheet } from "styled-components"
 
 export default class MyDocument extends Document {
   static async getInitialProps(
@@ -33,7 +40,9 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+        </Head>
         <body>
           <Main />
           <NextScript />

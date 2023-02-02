@@ -6,6 +6,7 @@ const Container = styled.div`
   margin-top: 8px;
   color: ${(props) => props.theme.colors.coreGrey};
   font-size: 13px;
+  padding-bottom: 40px;
 `
 
 export default function NavLinks() {

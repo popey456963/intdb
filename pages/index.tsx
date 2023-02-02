@@ -1,18 +1,17 @@
 import type { NextPage } from "next"
 import Head from "next/head"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
-import GridLoader from "react-spinners/GridLoader"
+import { useEffect, useMemo, useState } from "react"
 
 import Centerer from "components/Centerer"
 import Search from "components/Search"
 import NavLinks from "components/NavLinks"
 import Logo from "components/Logo"
-import Card from "components/Card"
 
 import { useGetOeisQueryInfinite } from "data/oeis"
-import theme from "styles/theme"
-import { SearchOrder, searchOrderOptions } from "interfaces"
+import { Entry, SearchOrder } from "interfaces"
+import ResultsList from "components/ResultsList"
+import SearchMeta from "components/SearchMeta"
 
 const Container = styled.div``
 
@@ -30,38 +29,18 @@ const Content = styled.div`
   padding-bottom: 48px;
 `
 
-const CardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
-
-const SearchMeta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  margin-top: 40px;
-`
-
-const Results = styled.div`
-  color: ${(props) => props.theme.colors.coreGrey};
-`
-
-const Loader = styled(GridLoader)`
-  padding-top: 48px;
-  margin: auto;
-`
-
 const PAGE_SIZE = 10
 
 const Home: NextPage = () => {
-  const [query, setQuery] = useState<string | undefined>("id:A000055")
+  const [query, setQuery] = useState<string>("1, 2, 3, 6, 11")
   const [sort, setSort] = useState<string>("relevance")
   const { data, size, setSize, isLoading, isValidating } =
     useGetOeisQueryInfinite(query, sort as SearchOrder)
 
   const isLoadingMore =
-    isLoading || (size > 0 && data && typeof data[size - 1] === "undefined")
+    isLoading ||
+    (size > 0 && data && typeof data[size - 1] === "undefined") ||
+    false
   const isEmpty = data?.[0]?.count === 0
   const isReachingEnd =
     isEmpty ||
@@ -90,10 +69,25 @@ const Home: NextPage = () => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [size, setSize, isLoadingMore, isReachingEnd])
 
+  const results = useMemo(() => {
+    if (!data) return []
+
+    return data
+      .map((response) => response.results)
+      .filter((result) => result !== null)
+      .flat() as Entry[]
+  }, [data])
+
+  const resultCount = useMemo(() => {
+    if (!data || data.length === 0) return undefined
+
+    return data[0].count
+  }, [data])
+
   return (
     <Container>
       <Head>
-        <title>Online Encyclopaedia of Integer Sequences</title>
+        <title>{query + " :: OEIS"}</title>
         <meta
           name="description"
           content={
@@ -105,39 +99,21 @@ const Home: NextPage = () => {
         <Centerer>
           <Content>
             <Logo />
-            <Search defaultValue="id:A000055" onSearch={onSearch} />
+            <Search defaultValue="1, 2, 3, 6, 11" onSearch={onSearch} />
             <NavLinks />
-            <SearchMeta>
-              <select
-                value={sort}
-                onChange={(e) => {
-                  setSort(e.target.value)
-                }}
-              >
-                {Object.entries(searchOrderOptions).map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-              {data && !isEmpty && (
-                <Results>
-                  {data[0].count} result{data[0].count !== 1 ? "s" : ""} found
-                </Results>
-              )}
-            </SearchMeta>
-            <CardList>
-              {data &&
-                data.map(
-                  (response) =>
-                    response?.results &&
-                    response.results.map((entry) => (
-                      <Card card={entry} key={entry.number} query={query} />
-                    ))
-                )}
-            </CardList>
-            {isEmpty && <p>No results found</p>}
-            {isLoadingMore && <Loader color={theme.colors.primary} />}
+            {resultCount !== 1 && (
+              <SearchMeta
+                sort={sort}
+                setSort={setSort}
+                resultCount={resultCount}
+              />
+            )}
+            <ResultsList
+              results={results}
+              query={query}
+              isEmpty={isEmpty}
+              isLoadingMore={isLoadingMore}
+            />
           </Content>
         </Centerer>
       </Main>
