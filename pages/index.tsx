@@ -1,17 +1,17 @@
-import type { NextPage } from "next"
 import Head from "next/head"
+import qs from "qs"
 import styled from "styled-components"
 import { useEffect, useMemo, useState } from "react"
-
 import Centerer from "components/Centerer"
 import Search from "components/Search"
 import NavLinks from "components/NavLinks"
 import Logo from "components/Logo"
 
-import { useGetOeisQueryInfinite } from "data/oeis"
+import { oeisFetcher, useGetOeisQueryInfinite } from "data/oeis"
 import { Entry, SearchOrder } from "interfaces"
 import ResultsList from "components/ResultsList"
 import SearchMeta from "components/SearchMeta"
+import { defaultQuery } from "data/defaultQuery"
 
 const Container = styled.div``
 
@@ -31,11 +31,11 @@ const Content = styled.div`
 
 const PAGE_SIZE = 10
 
-const Home: NextPage = () => {
-  const [query, setQuery] = useState<string>("1, 2, 3, 6, 11")
+export default function Home({ initialData }: any): any {
+  const [query, setQuery] = useState<string>(defaultQuery)
   const [sort, setSort] = useState<string>("relevance")
   const { data, size, setSize, isLoading, isValidating } =
-    useGetOeisQueryInfinite(query, sort as SearchOrder)
+    useGetOeisQueryInfinite(query, sort as SearchOrder, initialData)
 
   const isLoadingMore =
     isLoading ||
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
         <Centerer>
           <Content>
             <Logo />
-            <Search defaultValue="1, 2, 3, 6, 11" onSearch={onSearch} />
+            <Search defaultValue={defaultQuery} onSearch={onSearch} />
             <NavLinks />
             {resultCount !== 1 && (
               <SearchMeta
@@ -121,4 +121,21 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export async function getStaticProps() {
+  // `getStaticProps` is executed on the server side.
+  const defaultQuery = "1, 2, 3, 6, 11"
+
+  const data = await oeisFetcher(
+    `https://oeis.org/search?${qs.stringify({
+      q: defaultQuery,
+      start: 0,
+      fmt: "json",
+    })}`
+  )
+
+  return {
+    props: {
+      initialData: [data],
+    },
+  }
+}
