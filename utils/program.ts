@@ -15,9 +15,9 @@ export function getHighlightLanguage(userLanguage: string) {
         return highlight
     }
 
-    switch (language) {
-        case 'pari': return 'maxima'
-    }
+    // switch (language) {
+    //     case 'pari': return 'maxima'
+    // }
 
     return 'text'
 }

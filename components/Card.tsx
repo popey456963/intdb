@@ -16,7 +16,10 @@ import { Entry } from "interfaces"
 import DropSection from "components/DropSection"
 import React, { useState } from "react"
 import dynamic from "next/dynamic"
-import { atelierDuneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs"
+import {
+  atelierDuneDark,
+  atelierForestLight,
+} from "react-syntax-highlighter/dist/cjs/styles/hljs"
 import { getHighlightLanguage, parseProgramString } from "utils/program"
 
 const Container = styled.div`
@@ -186,57 +189,65 @@ function CodeDisplay({
   }
 
   programs = [...programs, ...parseProgramString(program)]
-  console.log(atelierDuneDark)
+  // console.log(atelierDuneDark)
 
-  atelierDuneDark["hljs-name"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-variable"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-name"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-variable"] = { color: "#045FFE" }
 
-  atelierDuneDark["hljs-attribute"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-built_in "] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-builtin-name"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-bullet"] = { color: "#60ac39" }
-  atelierDuneDark["hljs-comment"] = { color: "#5692FC" }
-  atelierDuneDark["hljs-emphasis"] = { fontStyle: "italic" }
-  atelierDuneDark["hljs-keyword"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-link"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-literal"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-meta"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-name"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-number"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-params"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-quote"] = { color: "#5692FC" }
-  atelierDuneDark["hljs-regexp"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-section"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-selector-class"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-selector-id"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-selector-tag"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-string"] = { color: "#60ac39" }
-  atelierDuneDark["hljs-strong"] = { fontWeight: "bold" }
-  atelierDuneDark["hljs-symbol"] = { color: "#60ac39" }
-  atelierDuneDark["hljs-tag"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-template-variable"] = { color: "#8891FF" }
-  atelierDuneDark["hljs-title"] = { color: "#045FFE" }
-  atelierDuneDark["hljs-type"] = { color: "rgb(64 181 81)" }
-  atelierDuneDark["hljs-variable"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-attribute"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-built_in "] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-builtin-name"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-bullet"] = { color: "#60ac39" }
+  // atelierDuneDark["hljs-comment"] = { color: "#5692FC" }
+  // atelierDuneDark["hljs-emphasis"] = { fontStyle: "italic" }
+  // atelierDuneDark["hljs-keyword"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-link"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-literal"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-meta"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-name"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-number"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-params"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-quote"] = { color: "#5692FC" }
+  // atelierDuneDark["hljs-regexp"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-section"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-selector-class"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-selector-id"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-selector-tag"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-string"] = { color: "#60ac39" }
+  // atelierDuneDark["hljs-strong"] = { fontWeight: "bold" }
+  // atelierDuneDark["hljs-symbol"] = { color: "#60ac39" }
+  // atelierDuneDark["hljs-tag"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-template-variable"] = { color: "#8891FF" }
+  // atelierDuneDark["hljs-title"] = { color: "#045FFE" }
+  // atelierDuneDark["hljs-type"] = { color: "rgb(64 181 81)" }
+  // atelierDuneDark["hljs-variable"] = { color: "#8891FF" }
+
   return (
     <>
       {programs.map((program, index) => (
-        <SyntaxHighlighter
-          key={index}
-          language={getHighlightLanguage(program.language)}
-          wrapLongLines={true}
-          style={atelierDuneDark}
-          customStyle={{
-            background:
-              "linear-gradient(225deg, rgba(8,6,16,1) 0%, rgba(26,24,52,1) 100%)",
-            color: "rgb(129 125 162)",
-            fontFamily: "Roboto Mono",
-            padding: "32px",
-            borderRadius: "14px",
-          }}
-        >
-          {program.code.join("\n")}
-        </SyntaxHighlighter>
+        <>
+          <h4>
+            {program.language.charAt(0).toUpperCase() +
+              program.language.slice(1)}
+          </h4>
+          <SyntaxHighlighter
+            key={index}
+            language={getHighlightLanguage(program.language)}
+            wrapLongLines={true}
+            // style={atelierDuneDark}
+            style={atelierForestLight}
+            customStyle={{
+              // background:
+              // "linear-gradient(225deg, rgba(8,6,16,1) 0%, rgba(26,24,52,1) 100%)",
+              color: "rgb(129 125 162)",
+              fontFamily: "Roboto Mono",
+              padding: "32px",
+              borderRadius: "14px",
+            }}
+          >
+            {program.code.join("\n")}
+          </SyntaxHighlighter>
+        </>
       ))}
     </>
   )
