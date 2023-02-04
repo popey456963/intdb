@@ -1,7 +1,7 @@
 import Head from "next/head"
 import qs from "qs"
 import styled from "styled-components"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Centerer from "components/Centerer"
 import Search from "components/Search"
 import NavLinks from "components/NavLinks"
@@ -12,6 +12,7 @@ import { Entry, SearchOrder } from "interfaces"
 import ResultsList from "components/ResultsList"
 import SearchMeta from "components/SearchMeta"
 import { defaultQuery } from "data/defaultQuery"
+import { useRouter } from "next/router"
 
 const Container = styled.div``
 
@@ -31,11 +32,20 @@ const Content = styled.div`
 
 const PAGE_SIZE = 10
 
-export default function Home({ initialData }: any): any {
-  const [query, setQuery] = useState<string>(defaultQuery)
+export default function Home({ initialData, initialQuery }: any): any {
+  const router = useRouter()
+  const [query, setQuery] = useState<string>(initialQuery)
+  const [search, setSearch] = useState<string>(initialQuery)
   const [sort, setSort] = useState<string>("relevance")
   const { data, size, setSize, isLoading, isValidating } =
-    useGetOeisQueryInfinite(query, sort as SearchOrder, initialData)
+    useGetOeisQueryInfinite(
+      initialQuery,
+      query,
+      sort as SearchOrder,
+      initialData
+    )
+
+  const { q } = router.query
 
   const isLoadingMore =
     isLoading ||
@@ -47,9 +57,12 @@ export default function Home({ initialData }: any): any {
     (data && (data[data.length - 1]?.results?.length || 0) < PAGE_SIZE)
   const isRefreshing = isValidating && data && data.length === size
 
-  const onSearch = (key: string) => {
-    setQuery(key)
-  }
+  const onSearch = useCallback(
+    (key: string) => {
+      setQuery(key)
+    },
+    [setQuery]
+  )
 
   useEffect(() => {
     const onScroll = () => {
@@ -68,6 +81,25 @@ export default function Home({ initialData }: any): any {
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [size, setSize, isLoadingMore, isReachingEnd])
+
+  useEffect(() => {
+    if (!q || Array.isArray(q)) {
+      return
+    }
+
+    setQuery(q)
+    setSearch(q)
+  }, [q, setQuery])
+
+  useEffect(() => {
+    if (router.query.q === query) {
+      return
+    }
+
+    router.push({ pathname: "/", query: { q: query } }, undefined, {
+      shallow: true,
+    })
+  }, [router, query])
 
   const results = useMemo(() => {
     if (!data) return []
@@ -99,7 +131,7 @@ export default function Home({ initialData }: any): any {
         <Centerer>
           <Content>
             <Logo />
-            <Search defaultValue={defaultQuery} onSearch={onSearch} />
+            <Search search={search} setSearch={setSearch} onSearch={onSearch} />
             <NavLinks />
             {resultCount !== 1 && (
               <SearchMeta
@@ -121,13 +153,35 @@ export default function Home({ initialData }: any): any {
   )
 }
 
-export async function getStaticProps() {
-  // `getStaticProps` is executed on the server side.
-  const defaultQuery = "1, 2, 3, 6, 11"
+// export async function getStaticProps() {
+//   // `getStaticProps` is executed on the server side.
+// const data = await oeisFetcher(
+//   `https://oeis.org/search?${qs.stringify({
+//     q: defaultQuery,
+//     start: 0,
+//     fmt: "json",
+//   })}`
+// )
+
+// return {
+//   props: {
+//     initialData: [data],
+//   },
+//   revalidate: 3600 * 24,
+// }
+// }
+
+export async function getServerSideProps({ res, query }: any) {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=3600, maxage=3600, stale-while-revalidate=7200"
+  )
+
+  const initialQuery = query.q || defaultQuery
 
   const data = await oeisFetcher(
     `https://oeis.org/search?${qs.stringify({
-      q: defaultQuery,
+      q: initialQuery,
       start: 0,
       fmt: "json",
     })}`
@@ -136,7 +190,7 @@ export async function getStaticProps() {
   return {
     props: {
       initialData: [data],
+      initialQuery: initialQuery,
     },
-    revalidate: 3600 * 24,
   }
 }

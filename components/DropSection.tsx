@@ -1,10 +1,6 @@
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faPresentationScreen,
-  faChevronDown,
-  faChevronRight,
-} from "@fortawesome/pro-solid-svg-icons"
+import { faChevronDown, faChevronRight } from "@fortawesome/pro-solid-svg-icons"
 import React, { useState } from "react"
 
 const Container = styled.div``

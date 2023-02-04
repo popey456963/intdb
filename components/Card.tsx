@@ -8,19 +8,16 @@ import {
   faBinary,
   faLink,
   faAnglesRight,
-  faCircle,
   faCircleInfo,
 } from "@fortawesome/pro-solid-svg-icons"
+import dynamic from "next/dynamic"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Entry } from "interfaces"
 import DropSection from "components/DropSection"
-import React, { useState } from "react"
-import dynamic from "next/dynamic"
-import {
-  atelierDuneDark,
-  atelierForestLight,
-} from "react-syntax-highlighter/dist/cjs/styles/hljs"
-import { getHighlightLanguage, parseProgramString } from "utils/program"
+import React, { memo, useState } from "react"
+
+import { parseProgramString } from "utils/program"
+import { robotoMono } from "styles/fonts"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -60,14 +57,14 @@ const Title = styled.p`
 `
 
 const Values = styled.p`
-  font-family: "Roboto Mono", sans-serif;
+  font-family: ${robotoMono.style.fontFamily}, sans-serif;
   font-size: 14px;
   color: ${(props) => props.theme.colors.coreGrey};
   white-space: pre-wrap;
 `
 
 const Bold = styled.span`
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
   color: #5049f2;
 `
@@ -103,7 +100,7 @@ const Monospace = styled.pre`
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
-  font-family: "roboto mono";
+  font-family: ${robotoMono.style.fontFamily};
   margin: 2px 0px;
 
   a {
@@ -116,7 +113,7 @@ const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: boolean }>`
   ${(props) => props.dropped && `transform: rotate(180deg);`}
 `
 
-const SyntaxHighlighter = dynamic(() => import("react-syntax-highlighter"))
+const CodeHighlight = dynamic(() => import("./CodeHighlight"), { ssr: false })
 
 function isIndexInIndices(index: number, indices: Array<[number, number]>) {
   for (let set of indices) {
@@ -189,65 +186,11 @@ function CodeDisplay({
   }
 
   programs = [...programs, ...parseProgramString(program)]
-  // console.log(atelierDuneDark)
-
-  // atelierDuneDark["hljs-name"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-variable"] = { color: "#045FFE" }
-
-  // atelierDuneDark["hljs-attribute"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-built_in "] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-builtin-name"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-bullet"] = { color: "#60ac39" }
-  // atelierDuneDark["hljs-comment"] = { color: "#5692FC" }
-  // atelierDuneDark["hljs-emphasis"] = { fontStyle: "italic" }
-  // atelierDuneDark["hljs-keyword"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-link"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-literal"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-meta"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-name"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-number"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-params"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-quote"] = { color: "#5692FC" }
-  // atelierDuneDark["hljs-regexp"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-section"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-selector-class"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-selector-id"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-selector-tag"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-string"] = { color: "#60ac39" }
-  // atelierDuneDark["hljs-strong"] = { fontWeight: "bold" }
-  // atelierDuneDark["hljs-symbol"] = { color: "#60ac39" }
-  // atelierDuneDark["hljs-tag"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-template-variable"] = { color: "#8891FF" }
-  // atelierDuneDark["hljs-title"] = { color: "#045FFE" }
-  // atelierDuneDark["hljs-type"] = { color: "rgb(64 181 81)" }
-  // atelierDuneDark["hljs-variable"] = { color: "#8891FF" }
 
   return (
     <>
       {programs.map((program, index) => (
-        <>
-          <h4>
-            {program.language.charAt(0).toUpperCase() +
-              program.language.slice(1)}
-          </h4>
-          <SyntaxHighlighter
-            key={index}
-            language={getHighlightLanguage(program.language)}
-            wrapLongLines={true}
-            // style={atelierDuneDark}
-            style={atelierForestLight}
-            customStyle={{
-              // background:
-              // "linear-gradient(225deg, rgba(8,6,16,1) 0%, rgba(26,24,52,1) 100%)",
-              color: "rgb(129 125 162)",
-              fontFamily: "Roboto Mono",
-              padding: "32px",
-              borderRadius: "14px",
-            }}
-          >
-            {program.code.join("\n")}
-          </SyntaxHighlighter>
-        </>
+        <CodeHighlight key={index} program={program} />
       ))}
     </>
   )
@@ -266,7 +209,7 @@ const cardProperties: Array<keyof Entry> = [
   "reference",
 ]
 
-export default function Card({
+export default memo(function Card({
   card,
   query,
   defaultExpanded,
@@ -411,4 +354,4 @@ export default function Card({
       </Expander>
     </Container>
   )
-}
+})
