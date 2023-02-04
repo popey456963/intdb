@@ -1,7 +1,11 @@
-import { Program } from 'interfaces'
 import languages from './languages'
 
 const languageRegex = /^\((.*?)\)[ ]?/
+
+interface Program {
+    language: string,
+    code: Array<string>
+}
 
 export function getHighlightLanguage(userLanguage: string) {
     const language = userLanguage.toLowerCase()
