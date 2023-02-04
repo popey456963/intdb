@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-common-types": "^6.2.0",
+    "@next/bundle-analyzer": "^13.1.6",
     "@types/node": "18.11.18",
     "@types/qs": "^6.9.7",
     "@types/react": "18.0.27",
