@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import qs from 'qs'
 import { OeisResponse, SearchOrder } from 'interfaces'
+import { defaultQuery } from './defaultQuery'
 
 export async function oeisFetcher(url: string) {
     return fetch(url)
@@ -20,7 +21,7 @@ export function useGetLatest() {
 
 }
 
-export function useGetOeisQueryInfinite(initialQuery: string, q?: string, sort: SearchOrder = SearchOrder.Relevance, initialValue?: OeisResponse) {
+export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOrder.Relevance, initialValue?: OeisResponse) {
     function oeisInfiniteKey(index: number, previous: OeisResponse) {
         if (previous && previous.count <= index * 10) {
             return null
@@ -34,7 +35,7 @@ export function useGetOeisQueryInfinite(initialQuery: string, q?: string, sort: 
     }
 
     return useSWRInfinite<OeisResponse>(oeisInfiniteKey, oeisFetcher, {
-        fallbackData: q === initialQuery && sort === SearchOrder.Relevance ? initialValue as any : undefined,
+        fallbackData: q === defaultQuery && sort === SearchOrder.Relevance ? initialValue as any : undefined,
         revalidateFirstPage: false
     })
 
