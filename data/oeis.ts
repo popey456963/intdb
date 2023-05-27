@@ -21,7 +21,7 @@ export function useGetLatest() {
 
 }
 
-export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOrder.Relevance, initialValue?: OeisResponse) {
+export function useGetOeisQueryInfinite(q?: string, initialQuery?: string, sort: SearchOrder = SearchOrder.Relevance, initialValue?: OeisResponse) {
     function oeisInfiniteKey(index: number, previous: OeisResponse) {
         if (previous && previous.count <= index * 10) {
             return null
@@ -35,7 +35,7 @@ export function useGetOeisQueryInfinite(q?: string, sort: SearchOrder = SearchOr
     }
 
     return useSWRInfinite<OeisResponse>(oeisInfiniteKey, oeisFetcher, {
-        fallbackData: q === defaultQuery && sort === SearchOrder.Relevance ? initialValue as any : undefined,
+        fallbackData: q === initialQuery && sort === SearchOrder.Relevance ? initialValue as any : undefined,
         revalidateFirstPage: false
     })
 

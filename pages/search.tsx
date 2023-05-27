@@ -1,8 +1,7 @@
 import Head from "next/head"
-import { useRouter } from "next/router"
 import qs from "qs"
 import styled from "styled-components"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import Centerer from "components/Centerer"
 import Search from "components/Search"
 import NavLinks from "components/NavLinks"
@@ -15,6 +14,7 @@ import { Entry, SearchOrder } from "interfaces"
 import ResultsList from "components/ResultsList"
 import SearchMeta from "components/SearchMeta"
 import { defaultQuery } from "data/defaultQuery"
+import { useRouter } from "next/router"
 
 const Loader = styled(GridLoader)`
   padding-top: 48px;
@@ -44,22 +44,16 @@ export default function Home({ initialData, initialQuery }: any): any {
   const [search, setSearch] = useState<string>(initialQuery)
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false)
 
-  const { data, size, setSize, isLoading } = useGetOeisQueryInfinite(
-    initialQuery,
-    initialQuery,
-    "relevance" as SearchOrder,
-    initialData
-  )
+  const query = router.query.q as string | undefined
+  const sort = (router.query.sort as string | undefined) || "relevance"
 
-  function onSearch(newSearch: string) {
-    setIsRedirecting(true)
-    router.push(`/search?q=${newSearch}&sort=relevance`)
-  }
-
-  function onSort(newSort: string) {
-    setIsRedirecting(true)
-    router.push(`/search?q=${initialQuery}&sort=${newSort}`)
-  }
+  const { data, size, setSize, isLoading, isValidating } =
+    useGetOeisQueryInfinite(
+      initialQuery,
+      query,
+      sort as SearchOrder,
+      initialData
+    )
 
   const isLoadingMore =
     isLoading ||
@@ -69,6 +63,29 @@ export default function Home({ initialData, initialQuery }: any): any {
   const isReachingEnd =
     isEmpty ||
     (data && (data[data.length - 1]?.results?.length || 0) < PAGE_SIZE)
+  const isRefreshing = isValidating && data && data.length === size
+
+  const onSearch = useCallback(
+    (newSearch: string) => {
+      setIsRedirecting(true)
+      router.push(
+        { pathname: "/search", query: { q: newSearch, sort: sort } },
+        undefined
+      )
+    },
+    [router, sort]
+  )
+
+  const onSort = useCallback(
+    (newSort: string) => {
+      setIsRedirecting(true)
+      router.push(
+        { pathname: "/search", query: { q: query, sort: newSort } },
+        undefined
+      )
+    },
+    [router, query]
+  )
 
   useEffect(() => {
     const onScroll = () => {
@@ -106,7 +123,7 @@ export default function Home({ initialData, initialQuery }: any): any {
   return (
     <Container>
       <Head>
-        <title>{initialQuery + " :: OEIS"}</title>
+        <title>{query + " :: OEIS"}</title>
         <meta
           name="description"
           content={
@@ -122,7 +139,7 @@ export default function Home({ initialData, initialQuery }: any): any {
             <NavLinks />
             {resultCount !== 1 && (
               <SearchMeta
-                sort={"relevance"}
+                sort={sort}
                 setSort={onSort}
                 resultCount={resultCount}
               />
@@ -145,11 +162,16 @@ export default function Home({ initialData, initialQuery }: any): any {
   )
 }
 
-export async function getStaticProps() {
-  // `getStaticProps` is executed on the server side.
+export async function getServerSideProps({ res, query }: any) {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=3600, maxage=3600, stale-while-revalidate=7200"
+  )
+
+  const initialQuery = query.q || defaultQuery
   const data = await oeisFetcher(
     `https://oeis.org/search?${qs.stringify({
-      q: defaultQuery,
+      q: initialQuery,
       start: 0,
       fmt: "json",
     })}`
@@ -158,8 +180,10 @@ export async function getStaticProps() {
   return {
     props: {
       initialData: [data],
-      initialQuery: defaultQuery,
+      initialQuery: initialQuery,
+
+      // Enforces rerendering of page
+      key: +new Date(),
     },
-    revalidate: 3600 * 24,
   }
 }

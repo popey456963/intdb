@@ -8,19 +8,21 @@ import {
   faBinary,
   faLink,
   faAnglesRight,
-  faCircle,
   faCircleInfo,
 } from "@fortawesome/pro-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Entry } from "interfaces"
 import DropSection from "components/DropSection"
 import React, { useState } from "react"
+
+import Link from "next/link"
 import dynamic from "next/dynamic"
 import {
   atelierDuneDark,
   atelierForestLight,
 } from "react-syntax-highlighter/dist/cjs/styles/hljs"
 import { getHighlightLanguage, parseProgramString } from "utils/program"
+import HoverOver from "./HoverOver"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -111,9 +113,9 @@ const Monospace = styled.pre`
   }
 `
 
-const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: boolean }>`
+const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: string }>`
   transition: all 0.3s;
-  ${(props) => props.dropped && `transform: rotate(180deg);`}
+  ${(props) => props.dropped === "true" && `transform: rotate(180deg);`}
 `
 
 const SyntaxHighlighter = dynamic(() => import("react-syntax-highlighter"))
@@ -270,10 +272,12 @@ export default function Card({
   card,
   query,
   defaultExpanded,
+  setIsRedirecting,
 }: {
   card: Entry
   query?: string
   defaultExpanded?: boolean
+  setIsRedirecting?: (isRedirecting: boolean) => void
 }) {
   const [dropped, setDropped] = useState(defaultExpanded || false)
 
@@ -282,34 +286,48 @@ export default function Card({
       sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
     0
   )
-  const defaultDropped = cardSize < 20
+  const defaultDropped = cardSize < 20 || defaultExpanded
+
+  const id = `A${String(card.number).padStart(6, "0")}`
 
   return (
     <Container>
-      <Content
-        onClick={() => {
-          setDropped(!dropped)
-        }}
+      <Link
+        href={`/${id}`}
+        onClick={() => setIsRedirecting && setIsRedirecting(true)}
       >
-        <Misc>
-          <ID>A{String(card.number).padStart(6, "0")}</ID>
-          <ProgIcons>
-            {card.program && <ProgIcon src={"/code.svg"} alt="Has program" />}
-            {card.maple && (
-              <ProgIcon src={"/maple.svg"} alt="Has Maple program" />
-            )}
-            {card.mathematica && (
-              <ProgIcon src={"/mathmatica.svg"} alt="Has Mathematica program" />
-            )}
-          </ProgIcons>
-        </Misc>
-        <Title>{card.name}</Title>
-        <Values>
-          <DataValues data={card.data} query={query} />
-        </Values>
-      </Content>
+        <Content>
+          <Misc>
+            <ID>{id}</ID>
+            <ProgIcons>
+              {card.program && (
+                <HoverOver message="Has code implementation">
+                  <ProgIcon src="/code.svg" alt="Has code implementation" />
+                </HoverOver>
+              )}
+              {card.maple && (
+                <HoverOver message="Has Maple implementation">
+                  <ProgIcon src={"/maple.svg"} alt="Has Maple implementation" />
+                </HoverOver>
+              )}
+              {card.mathematica && (
+                <HoverOver message="Has Mathematica implementation">
+                  <ProgIcon
+                    src={"/mathmatica.svg"}
+                    alt="Has Mathematica implementation"
+                  />
+                </HoverOver>
+              )}
+            </ProgIcons>
+          </Misc>
+          <Title>{card.name}</Title>
+          <Values>
+            <DataValues data={card.data} query={query} />
+          </Values>
+        </Content>
+      </Link>
       <FullContent dropped={dropped}>
-        {card.example && (
+        {dropped && card.example && (
           <DropSection
             icon={faPresentationScreen}
             name={"Example"}
@@ -320,7 +338,7 @@ export default function Card({
             ))}
           </DropSection>
         )}
-        {card.comment && (
+        {dropped && card.comment && (
           <DropSection
             icon={faComment}
             name={"Comment"}
@@ -331,7 +349,7 @@ export default function Card({
             ))}
           </DropSection>
         )}
-        {card.formula && (
+        {dropped && card.formula && (
           <DropSection
             icon={faFunction}
             name={"Formula"}
@@ -353,7 +371,7 @@ export default function Card({
             />
           </DropSection>
         )}
-        {card.reference && (
+        {dropped && card.reference && (
           <DropSection
             icon={faAsterisk}
             name={`References (${card.references})`}
@@ -364,7 +382,7 @@ export default function Card({
             ))}
           </DropSection>
         )}
-        {card.link && (
+        {dropped && card.link && (
           <DropSection
             icon={faLink}
             name={"Links"}
@@ -375,7 +393,7 @@ export default function Card({
             />
           </DropSection>
         )}
-        {card.xref && (
+        {dropped && card.xref && (
           <DropSection
             icon={faAsterisk}
             name={"Cross References"}
@@ -384,7 +402,7 @@ export default function Card({
             <Monospace>{card.xref}</Monospace>
           </DropSection>
         )}
-        {card.ext && (
+        {dropped && card.ext && (
           <DropSection
             icon={faAnglesRight}
             name={"Extensions"}
@@ -407,7 +425,7 @@ export default function Card({
         </DropSection>
       </FullContent>
       <Expander onClick={() => setDropped(!dropped)}>
-        <ExpandChevron icon={faChevronDown} dropped={dropped} />
+        <ExpandChevron icon={faChevronDown} dropped={dropped.toString()} />
       </Expander>
     </Container>
   )
