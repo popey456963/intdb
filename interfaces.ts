@@ -49,8 +49,3 @@ export const searchOrderOptions = {
     modified: 'Modified',
     created: 'Created',
 }
-
-export interface Program {
-    language: string,
-    code: Array<string>
-}

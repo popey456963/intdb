@@ -14,7 +14,6 @@ import { Entry, SearchOrder } from "interfaces"
 import ResultsList from "components/ResultsList"
 import SearchMeta from "components/SearchMeta"
 import { defaultQuery } from "data/defaultQuery"
-import { useRouter } from "next/router"
 
 const Loader = styled(GridLoader)`
   padding-top: 48px;
@@ -117,7 +116,7 @@ export default function Home({ initialData, initialQuery }: any): any {
         <Centerer>
           <Content>
             <Logo />
-            <Search search={search} setSearch={setSearch} onSearch={onSearch} />
+            <Search defaultValue={defaultQuery} onSearch={onSearch} />
             <NavLinks />
             {resultCount !== 1 && (
               <SearchMeta
