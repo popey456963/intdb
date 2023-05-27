@@ -137,16 +137,17 @@ const HiddenInput = styled.input`
 `
 
 type Props = {
-  defaultValue: string
+  search: string
+  setSearch: (newSearch: string) => void
   onSearch?: (query: string) => void
 }
 
 export default function Search({
-  defaultValue = "",
+  search,
+  setSearch,
   onSearch = () => {},
 }: Props) {
   const [dropped, setDropped] = useState<boolean>(false)
-  const [search, setSearch] = useState<string>(defaultValue)
 
   const textInput = useRef<any>(null)
 

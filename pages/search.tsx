@@ -57,11 +57,14 @@ export default function Home({ initialData, initialQuery }: any): any {
     (data && (data[data.length - 1]?.results?.length || 0) < PAGE_SIZE)
   const isRefreshing = isValidating && data && data.length === size
 
-  const onSearch = useCallback((newSearch: string) => {
-    router.push({ pathname: "/search", query: { q: newSearch } }, undefined, {
-      shallow: true,
-    })
-  }, [])
+  const onSearch = useCallback(
+    (newSearch: string) => {
+      router.push({ pathname: "/search", query: { q: newSearch } }, undefined, {
+        shallow: true,
+      })
+    },
+    [router]
+  )
 
   useEffect(() => {
     const onScroll = () => {

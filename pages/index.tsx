@@ -117,7 +117,7 @@ export default function Home({ initialData, initialQuery }: any): any {
         <Centerer>
           <Content>
             <Logo />
-            <Search defaultValue={defaultQuery} onSearch={onSearch} />
+            <Search search={search} setSearch={setSearch} onSearch={onSearch} />
             <NavLinks />
             {resultCount !== 1 && (
               <SearchMeta
