@@ -28,7 +28,7 @@ const NotFound = styled.img`
 
 interface Props {
   results: Array<Entry>
-  query: string
+  query?: string
   isEmpty?: boolean
   isLoadingMore?: boolean
 }

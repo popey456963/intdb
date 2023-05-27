@@ -18,6 +18,7 @@ import React, { memo, useState } from "react"
 
 import { parseProgramString } from "utils/program"
 import { robotoMono } from "styles/fonts"
+import Link from "next/link"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -108,9 +109,9 @@ const Monospace = styled.pre`
   }
 `
 
-const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: boolean }>`
+const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: string }>`
   transition: all 0.3s;
-  ${(props) => props.dropped && `transform: rotate(180deg);`}
+  ${(props) => props.dropped === "true" && `transform: rotate(180deg);`}
 `
 
 const CodeHighlight = dynamic(() => import("./CodeHighlight"), { ssr: false })
@@ -227,32 +228,35 @@ export default memo(function Card({
   )
   const defaultDropped = cardSize < 20
 
+  const id = `A${String(card.number).padStart(6, "0")}`
+
   return (
     <Container>
-      <Content
-        onClick={() => {
-          setDropped(!dropped)
-        }}
-      >
-        <Misc>
-          <ID>A{String(card.number).padStart(6, "0")}</ID>
-          <ProgIcons>
-            {card.program && <ProgIcon src={"/code.svg"} alt="Has program" />}
-            {card.maple && (
-              <ProgIcon src={"/maple.svg"} alt="Has Maple program" />
-            )}
-            {card.mathematica && (
-              <ProgIcon src={"/mathmatica.svg"} alt="Has Mathematica program" />
-            )}
-          </ProgIcons>
-        </Misc>
-        <Title>{card.name}</Title>
-        <Values>
-          <DataValues data={card.data} query={query} />
-        </Values>
-      </Content>
+      <Link href={`/${id}`}>
+        <Content>
+          <Misc>
+            <ID>{id}</ID>
+            <ProgIcons>
+              {card.program && <ProgIcon src={"/code.svg"} alt="Has program" />}
+              {card.maple && (
+                <ProgIcon src={"/maple.svg"} alt="Has Maple program" />
+              )}
+              {card.mathematica && (
+                <ProgIcon
+                  src={"/mathmatica.svg"}
+                  alt="Has Mathematica program"
+                />
+              )}
+            </ProgIcons>
+          </Misc>
+          <Title>{card.name}</Title>
+          <Values>
+            <DataValues data={card.data} query={query} />
+          </Values>
+        </Content>
+      </Link>
       <FullContent dropped={dropped}>
-        {card.example && (
+        {dropped && card.example && (
           <DropSection
             icon={faPresentationScreen}
             name={"Example"}
@@ -263,7 +267,7 @@ export default memo(function Card({
             ))}
           </DropSection>
         )}
-        {card.comment && (
+        {dropped && card.comment && (
           <DropSection
             icon={faComment}
             name={"Comment"}
@@ -274,7 +278,7 @@ export default memo(function Card({
             ))}
           </DropSection>
         )}
-        {card.formula && (
+        {dropped && card.formula && (
           <DropSection
             icon={faFunction}
             name={"Formula"}
@@ -296,7 +300,7 @@ export default memo(function Card({
             />
           </DropSection>
         )}
-        {card.reference && (
+        {dropped && card.reference && (
           <DropSection
             icon={faAsterisk}
             name={`References (${card.references})`}
@@ -307,7 +311,7 @@ export default memo(function Card({
             ))}
           </DropSection>
         )}
-        {card.link && (
+        {dropped && card.link && (
           <DropSection
             icon={faLink}
             name={"Links"}
@@ -318,7 +322,7 @@ export default memo(function Card({
             />
           </DropSection>
         )}
-        {card.xref && (
+        {dropped && card.xref && (
           <DropSection
             icon={faAsterisk}
             name={"Cross References"}
@@ -327,7 +331,7 @@ export default memo(function Card({
             <Monospace>{card.xref}</Monospace>
           </DropSection>
         )}
-        {card.ext && (
+        {dropped && card.ext && (
           <DropSection
             icon={faAnglesRight}
             name={"Extensions"}
@@ -350,7 +354,7 @@ export default memo(function Card({
         </DropSection>
       </FullContent>
       <Expander onClick={() => setDropped(!dropped)}>
-        <ExpandChevron icon={faChevronDown} dropped={dropped} />
+        <ExpandChevron icon={faChevronDown} dropped={dropped.toString()} />
       </Expander>
     </Container>
   )
