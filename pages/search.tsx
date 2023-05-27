@@ -59,9 +59,7 @@ export default function Home({ initialData, initialQuery }: any): any {
 
   const onSearch = useCallback(
     (newSearch: string) => {
-      router.push({ pathname: "/search", query: { q: newSearch } }, undefined, {
-        shallow: true,
-      })
+      router.push({ pathname: "/search", query: { q: newSearch } }, undefined)
     },
     [router]
   )
