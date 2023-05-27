@@ -226,7 +226,7 @@ export default memo(function Card({
       sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
     0
   )
-  const defaultDropped = cardSize < 20
+  const defaultDropped = cardSize < 20 || defaultExpanded
 
   const id = `A${String(card.number).padStart(6, "0")}`
 

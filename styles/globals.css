@@ -8,7 +8,7 @@ body {
   background-attachment: fixed;
   background-position: center;
 
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 a {
