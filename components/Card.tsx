@@ -22,6 +22,7 @@ import {
   atelierForestLight,
 } from "react-syntax-highlighter/dist/cjs/styles/hljs"
 import { getHighlightLanguage, parseProgramString } from "utils/program"
+import HoverOver from "./HoverOver"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -299,15 +300,23 @@ export default function Card({
           <Misc>
             <ID>{id}</ID>
             <ProgIcons>
-              {card.program && <ProgIcon src={"/code.svg"} alt="Has program" />}
+              {card.program && (
+                <HoverOver message="Has code implementation">
+                  <ProgIcon src="/code.svg" alt="Has code implementation" />
+                </HoverOver>
+              )}
               {card.maple && (
-                <ProgIcon src={"/maple.svg"} alt="Has Maple program" />
+                <HoverOver message="Has Maple implementation">
+                  <ProgIcon src={"/maple.svg"} alt="Has Maple implementation" />
+                </HoverOver>
               )}
               {card.mathematica && (
-                <ProgIcon
-                  src={"/mathmatica.svg"}
-                  alt="Has Mathematica program"
-                />
+                <HoverOver message="Has Mathematica implementation">
+                  <ProgIcon
+                    src={"/mathmatica.svg"}
+                    alt="Has Mathematica implementation"
+                  />
+                </HoverOver>
               )}
             </ProgIcons>
           </Misc>
