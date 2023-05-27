@@ -31,6 +31,7 @@ interface Props {
   query?: string
   isEmpty?: boolean
   isLoadingMore?: boolean
+  setIsRedirecting?: (isRedirecting: boolean) => void
 }
 
 export default function ResultsList({
@@ -38,6 +39,7 @@ export default function ResultsList({
   query,
   isEmpty = false,
   isLoadingMore = false,
+  setIsRedirecting,
 }: Props) {
   return (
     <>
@@ -48,6 +50,7 @@ export default function ResultsList({
             key={entry.number}
             query={query}
             defaultExpanded={results.length === 1}
+            setIsRedirecting={setIsRedirecting}
           />
         ))}
       </CardList>

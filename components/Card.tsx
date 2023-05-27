@@ -271,10 +271,12 @@ export default function Card({
   card,
   query,
   defaultExpanded,
+  setIsRedirecting,
 }: {
   card: Entry
   query?: string
   defaultExpanded?: boolean
+  setIsRedirecting?: (isRedirecting: boolean) => void
 }) {
   const [dropped, setDropped] = useState(defaultExpanded || false)
 
@@ -289,7 +291,10 @@ export default function Card({
 
   return (
     <Container>
-      <Link href={`/${id}`}>
+      <Link
+        href={`/${id}`}
+        onClick={() => setIsRedirecting && setIsRedirecting(true)}
+      >
         <Content>
           <Misc>
             <ID>{id}</ID>

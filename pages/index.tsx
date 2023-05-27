@@ -55,13 +55,14 @@ export default function Home({ initialData, initialQuery }: any): any {
     setIsRedirecting(true)
     router.push(`/search?q=${newSearch}&sort=relevance`)
   }
+
   function onSort(newSort: string) {
     setIsRedirecting(true)
     router.push(`/search?q=${initialQuery}&sort=${newSort}`)
   }
 
   const isLoadingMore =
-    isRedirecting ||
+    isLoading ||
     (size > 0 && data && typeof data[size - 1] === "undefined") ||
     false
   const isEmpty = data?.[0]?.count === 0
@@ -134,6 +135,7 @@ export default function Home({ initialData, initialQuery }: any): any {
                 query={defaultQuery}
                 isEmpty={isEmpty}
                 isLoadingMore={isLoadingMore}
+                setIsRedirecting={setIsRedirecting}
               />
             )}
           </Content>

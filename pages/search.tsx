@@ -6,6 +6,8 @@ import Centerer from "components/Centerer"
 import Search from "components/Search"
 import NavLinks from "components/NavLinks"
 import Logo from "components/Logo"
+import GridLoader from "react-spinners/GridLoader"
+import theme from "styles/theme"
 
 import { oeisFetcher, useGetOeisQueryInfinite } from "data/oeis"
 import { Entry, SearchOrder } from "interfaces"
@@ -13,6 +15,11 @@ import ResultsList from "components/ResultsList"
 import SearchMeta from "components/SearchMeta"
 import { defaultQuery } from "data/defaultQuery"
 import { useRouter } from "next/router"
+
+const Loader = styled(GridLoader)`
+  padding-top: 48px;
+  margin: auto;
+`
 
 const Container = styled.div``
 
@@ -35,9 +42,10 @@ const PAGE_SIZE = 10
 export default function Home({ initialData, initialQuery }: any): any {
   const router = useRouter()
   const [search, setSearch] = useState<string>(initialQuery)
-  const [sort, setSort] = useState<string>("relevance")
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(false)
 
   const query = router.query.q as string | undefined
+  const sort = (router.query.sort as string | undefined) || "relevance"
 
   const { data, size, setSize, isLoading, isValidating } =
     useGetOeisQueryInfinite(
@@ -59,9 +67,24 @@ export default function Home({ initialData, initialQuery }: any): any {
 
   const onSearch = useCallback(
     (newSearch: string) => {
-      router.push({ pathname: "/search", query: { q: newSearch } }, undefined)
+      setIsRedirecting(true)
+      router.push(
+        { pathname: "/search", query: { q: newSearch, sort: sort } },
+        undefined
+      )
     },
-    [router]
+    [router, sort]
+  )
+
+  const onSort = useCallback(
+    (newSort: string) => {
+      setIsRedirecting(true)
+      router.push(
+        { pathname: "/search", query: { q: query, sort: newSort } },
+        undefined
+      )
+    },
+    [router, query]
   )
 
   useEffect(() => {
@@ -117,16 +140,21 @@ export default function Home({ initialData, initialQuery }: any): any {
             {resultCount !== 1 && (
               <SearchMeta
                 sort={sort}
-                setSort={setSort}
+                setSort={onSort}
                 resultCount={resultCount}
               />
             )}
-            <ResultsList
-              results={results}
-              query={query}
-              isEmpty={isEmpty}
-              isLoadingMore={isLoadingMore}
-            />
+            {isRedirecting ? (
+              <Loader color={theme.colors.primary} />
+            ) : (
+              <ResultsList
+                results={results}
+                query={defaultQuery}
+                isEmpty={isEmpty}
+                isLoadingMore={isLoadingMore}
+                setIsRedirecting={setIsRedirecting}
+              />
+            )}
           </Content>
         </Centerer>
       </Main>
