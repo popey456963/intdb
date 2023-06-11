@@ -1,15 +1,17 @@
+mod parse;
+
 use nom::character::complete::{char, digit1};
 use nom::combinator::{map_res, opt, recognize};
 use nom::multi::separated_list1;
 use nom::sequence::tuple;
 use nom::IResult;
 use num_bigint::BigInt;
-// use num_traits::{One, Zero};
+use rayon::prelude::*;
 
 use std::fs::File;
-use std::io::{self, prelude::*, BufReader};
+use std::io::{prelude::*, BufReader};
 use std::str::{self, FromStr};
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 use std::error::Error;
 
@@ -19,33 +21,8 @@ pub struct Sequence {
     pub values: Vec<BigInt>,
 }
 
-// fn parse_line(input: &[u8]) -> IResult<&[u8], usize> {
-//     let (input, _) = tag("A")(input)?;
-
-//     let (input, id_array) = take(6 as usize)(input)?;
-
-//     let id_str = match str::from_utf8(id_array) {
-//         Ok(v) => v,
-//         Err(e) => panic!("Invalid UTF-8 sequence: {}", e),
-//     };
-
-//     let id = id_str.parse::<usize>().unwrap();
-
-//     let (input, value_array) = separated_list1(tag(","));
-
-//     dbg!(id);
-
-//     Ok((input, 0))
-// }
 fn parse_usize(input: &str) -> IResult<&str, usize> {
     map_res(recognize(digit1), str::parse)(input)
-}
-
-fn parse_isize(input: &str) -> IResult<&str, isize> {
-    map_res(
-        recognize(tuple((opt(char('-')), digit1))),
-        FromStr::from_str,
-    )(input)
 }
 
 fn parse_bigint(input: &str) -> IResult<&str, BigInt> {
@@ -91,12 +68,35 @@ fn get_sequences() -> Result<Vec<Sequence>, Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let start = Instant::now();
+    let load_start = Instant::now();
 
     let sequences = get_sequences()?;
 
-    let duration = start.elapsed();
-    println!("Processed {} lines in {:?}", sequences.len(), duration);
+    let load_duration: std::time::Duration = load_start.elapsed();
+
+    let search_start = Instant::now();
+
+    let value = BigInt::from(2);
+    // let mut count = 0;
+
+    let count = sequences
+        .par_iter()
+        .filter(|&v| v.values.contains(&value))
+        .count();
+
+    // for seq in sequences.iter() {
+    //     if seq.values.contains(&value) {
+    //         count += 1;
+    //     }
+    // }
+
+    let search_duration = search_start.elapsed();
+
+    println!("Processed {} lines in {:?}", sequences.len(), load_duration);
+    println!(
+        "Found {} numbers with value {} in {:?}",
+        count, value, search_duration
+    );
 
     Ok(())
 }
