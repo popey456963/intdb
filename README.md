@@ -7,18 +7,18 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/popey456963/pretty-oeis">
+  <a href="https://github.com/popey456963/intdb">
     <img src="public/title.svg" alt="Logo" width="320">
   </a>
 
   <p align="center">
-    <a href="https://example.com">View Demo</a>
+    <a href="https://intdb.io">View Demo</a>
     ·
-    <a href="https://github.com/popey456963/pretty-oeis/issues">Report Bug</a>
+    <a href="https://github.com/popey456963/intdb/issues">Report Bug</a>
     ·
-    <a href="https://github.com/popey456963/pretty-oeis/issues">Request Feature</a>
+    <a href="https://github.com/popey456963/intdb/issues">Request Feature</a>
     ·
-    <a href="https://github.com/popey456963/pretty-oeis/wiki/Changelog">Changelog</a>
+    <a href="https://github.com/popey456963/intdb/wiki/Changelog">Changelog</a>
   </p>
 </p>
 
@@ -42,11 +42,11 @@
 
 ## About The Project
 
-[![Web File Uploader Screenshot][product-screenshot]](https://example.com)
+[![IntDB Screenshot][product-screenshot]](https://intdb.io)
 
 A conventional dictionary is a collection of words, together with explanations of their meanings, hints for their pronunciation, pictures illustrating particular words, examples showing how the words have been used in books and newspapers, and so on.
 
-The OEIS is a collection of sequences of numbers (such as 1, 2, 4, 8, 16, 32, 64, 128, …) together with, for each sequence, a list of items such as:
+The IntDB is a collection of sequences of numbers (such as 1, 2, 4, 8, 16, 32, 64, 128, …) together with, for each sequence, a list of items such as:
 
 - The first 10, or 10,000, or sometimes 500,000 terms of the sequence
 - A definition or description of the sequence
@@ -56,7 +56,7 @@ The OEIS is a collection of sequences of numbers (such as 1, 2, 4, 8, 16, 32, 64
 - References to books and articles where the sequence has appeared
 - Links to web pages on the Internet where the sequence has appeared
 
-The OEIS stores over 350,000 entries as of 2023, and is growing rapidly. These sequences come from many sources - books, journals, articles, letters and emails from thousands of contributors.
+The IntDB stores over 350,000 entries as of 2023, and is growing rapidly. These sequences are sourced from the [OEIS](https://oeis.org), but originate from many sources - books, journals, articles, letters and emails from thousands of contributors.
 
 ### Built With
 
@@ -70,7 +70,7 @@ The OEIS stores over 350,000 entries as of 2023, and is growing rapidly. These s
 This guide assumes you have `git`, `node` and `npm` installed. No other dependencies are required.
 
 ```bash
-git clone https://github.com/popey456963/pretty-oeis && cd pretty-oeis
+git clone https://github.com/popey456963/intdb && cd intdb
 npm install
 npm run dev
 ```
@@ -79,7 +79,7 @@ npm run dev
 
 ## Roadmap
 
-See the [open issues](https://github.com/popey456963/pretty-oeis/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/popey456963/intdb/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 
@@ -103,10 +103,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Alexander Craggs - oeis@femto.dev  
+Alexander Craggs - intdb@femto.dev
 Tom Emmerson - tom@carefully.codes
 
-Project Link: [https://github.com/popey456963/pretty-oeis](https://github.com/popey456963/pretty-oeis)
+Project Link: [https://github.com/popey456963/intdb](https://github.com/popey456963/intdb)
 
 <!-- ACKNOWLEDGEMENTS -->
 
@@ -118,15 +118,15 @@ Project Link: [https://github.com/popey456963/pretty-oeis](https://github.com/po
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/popey456963/pretty-oeis.svg?style=flat-square
-[contributors-url]: https://github.com/popey456963/pretty-oeis/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/popey456963/pretty-oeis.svg?style=flat-square
-[forks-url]: https://github.com/popey456963/pretty-oeis/network/members
+[contributors-shield]: https://img.shields.io/github/contributors/popey456963/intdb.svg?style=flat-square
+[contributors-url]: https://github.com/popey456963/intdb/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/popey456963/intdb.svg?style=flat-square
+[forks-url]: https://github.com/popey456963/intdb/network/members
 [chat-shield]: https://img.shields.io/discord/493418312714289158?style=flat-square
-[stars-shield]: https://img.shields.io/github/stars/popey456963/pretty-oeis.svg?style=flat-square
-[stars-url]: https://github.com/popey456963/pretty-oeis/stargazers
-[issues-shield]: https://img.shields.io/github/issues/popey456963/pretty-oeis.svg?style=flat-square
-[issues-url]: https://github.com/popey456963/pretty-oeis/issues
-[license-shield]: https://img.shields.io/github/license/popey456963/pretty-oeis.svg?style=flat-square
-[license-url]: https://github.com/popey456963/pretty-oeis/blob/master/LICENSE.txt
+[stars-shield]: https://img.shields.io/github/stars/popey456963/intdb.svg?style=flat-square
+[stars-url]: https://github.com/popey456963/intdb/stargazers
+[issues-shield]: https://img.shields.io/github/issues/popey456963/intdb.svg?style=flat-square
+[issues-url]: https://github.com/popey456963/intdb/issues
+[license-shield]: https://img.shields.io/github/license/popey456963/intdb.svg?style=flat-square
+[license-url]: https://github.com/popey456963/intdb/blob/master/LICENSE.txt
 [product-screenshot]: public/screenshot.png
