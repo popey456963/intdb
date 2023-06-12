@@ -8,6 +8,13 @@ const Container = styled.div`
   font-size: 13px;
   padding-bottom: 40px;
   margin-top: 14px;
+
+  @media (max-width: 600px) {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 11px;
+    text-align: center;
+  }
 `;
 
 const ColouredLink = styled(Link)`
