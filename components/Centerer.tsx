@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div<{ verticalAlign: boolean }>`
+const Container = styled.div<{ verticalAlign?: boolean }>`
   display: flex;
   justify-content: center;
   margin: 0px 40px;
