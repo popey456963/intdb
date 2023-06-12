@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from 'styled-components';
 import {
   faChevronDown,
   faPresentationScreen,
@@ -9,70 +9,70 @@ import {
   faLink,
   faAnglesRight,
   faCircleInfo,
-} from "@fortawesome/pro-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Entry } from "interfaces"
-import DropSection from "components/DropSection"
-import React, { useState } from "react"
+} from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Entry } from 'interfaces';
+import DropSection from 'components/DropSection';
+import React, { useState } from 'react';
 
-import Link from "next/link"
-import dynamic from "next/dynamic"
+import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
   atelierDuneDark,
   atelierForestLight,
-} from "react-syntax-highlighter/dist/cjs/styles/hljs"
-import { getHighlightLanguage, parseProgramString } from "utils/program"
-import HoverOver from "./HoverOver"
+} from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { getHighlightLanguage, parseProgramString } from 'utils/program';
+import HoverOver from './HoverOver';
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
   border-radius: 14px;
   background: white;
   overflow: hidden;
-  box-shadow: 0px 6px 20px #0000000d;
-`
+  // box-shadow: 0px 6px 20px #0000000d;
+`;
 
 const Content = styled.div`
   padding: 23px 23px 0px 23px;
   cursor: pointer;
-`
+`;
 
 const Misc = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const ID = styled.div`
   font-size: 15px;
-`
+`;
 
 const ProgIcons = styled.div`
   display: flex;
   grid-gap: 10px;
-`
+`;
 
 const ProgIcon = styled.img`
   width: 17px;
-`
+`;
 
 const Title = styled.p`
   font-size: 18px;
   font-weight: 500;
   margin: 12px 0px;
-`
+`;
 
 const Values = styled.p`
-  font-family: "Roboto Mono", sans-serif;
+  font-family: 'Roboto Mono', sans-serif;
   font-size: 14px;
   color: ${(props) => props.theme.colors.coreGrey};
   white-space: pre-wrap;
-`
+`;
 
 const Bold = styled.span`
   font-weight: 800;
   font-size: 16px;
   color: #5049f2;
-`
+`;
 
 const Expander = styled.div`
   padding: 15px;
@@ -88,15 +88,15 @@ const Expander = styled.div`
   &:hover {
     background: #fafafa;
   }
-`
+`;
 
 const FullContent = styled.div<{ dropped: boolean }>`
-  margin: ${(props) => (props.dropped ? "23px 23px 35px 23px" : "0px")};
-  height: ${(props) => (props.dropped ? "fit-content" : "0px")};
+  margin: ${(props) => (props.dropped ? '23px 23px 35px 23px' : '0px')};
+  height: ${(props) => (props.dropped ? 'fit-content' : '0px')};
   display: flex;
   flex-direction: column;
   gap: 5px;
-`
+`;
 
 const Monospace = styled.pre`
   overflow-x: auto;
@@ -105,50 +105,50 @@ const Monospace = styled.pre`
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
-  font-family: "roboto mono";
+  font-family: 'roboto mono';
   margin: 2px 0px;
 
   a {
     color: ${(props) => props.theme.colors.primary};
   }
-`
+`;
 
 const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: string }>`
   transition: all 0.3s;
-  ${(props) => props.dropped === "true" && `transform: rotate(180deg);`}
-`
+  ${(props) => props.dropped === 'true' && `transform: rotate(180deg);`}
+`;
 
-const SyntaxHighlighter = dynamic(() => import("react-syntax-highlighter"))
+const SyntaxHighlighter = dynamic(() => import('react-syntax-highlighter'));
 
 function isIndexInIndices(index: number, indices: Array<[number, number]>) {
   for (let set of indices) {
     if (index >= set[0] && index < set[1]) {
-      return true
+      return true;
     }
   }
 
-  return false
+  return false;
 }
 
 function DataValues({ data, query }: { data: string; query?: string }) {
-  const values = data.split(",")
+  const values = data.split(',');
 
-  let indices: Array<[number, number]> = []
+  let indices: Array<[number, number]> = [];
   if (query) {
     const parsedQuery = query
       .split(/[, ]/)
-      .filter((item) => item !== "" && !isNaN(Number(item)))
+      .filter((item) => item !== '' && !isNaN(Number(item)));
 
     if (parsedQuery.length) {
       outer: for (let i = 0; i < values.length; i++) {
         for (let j = 0; j < parsedQuery.length; j++) {
           if (values[i + j] !== parsedQuery[j]) {
-            continue outer
+            continue outer;
           }
         }
 
         // we have found a match
-        indices.push([i, i + parsedQuery.length])
+        indices.push([i, i + parsedQuery.length]);
       }
     }
   }
@@ -157,12 +157,12 @@ function DataValues({ data, query }: { data: string; query?: string }) {
     <>
       {values.map((value, i) => (
         <span key={i}>
-          {i > 0 && ", "}
+          {i > 0 && ', '}
           {isIndexInIndices(i, indices) ? <Bold>{value}</Bold> : value}
         </span>
       ))}
     </>
-  )
+  );
 }
 
 function CodeDisplay({
@@ -170,27 +170,27 @@ function CodeDisplay({
   maple,
   mathematica,
 }: {
-  program: Array<string>
-  maple?: Array<string>
-  mathematica?: Array<string>
+  program: Array<string>;
+  maple?: Array<string>;
+  mathematica?: Array<string>;
 }) {
-  let programs = []
+  let programs = [];
 
   if (maple) {
     programs.push({
-      language: "maple",
+      language: 'maple',
       code: maple,
-    })
+    });
   }
 
   if (mathematica) {
     programs.push({
-      language: "mathematica",
+      language: 'mathematica',
       code: mathematica,
-    })
+    });
   }
 
-  programs = [...programs, ...parseProgramString(program)]
+  programs = [...programs, ...parseProgramString(program)];
   // console.log(atelierDuneDark)
 
   // atelierDuneDark["hljs-name"] = { color: "#045FFE" }
@@ -241,32 +241,32 @@ function CodeDisplay({
             customStyle={{
               // background:
               // "linear-gradient(225deg, rgba(8,6,16,1) 0%, rgba(26,24,52,1) 100%)",
-              color: "rgb(129 125 162)",
-              fontFamily: "Roboto Mono",
-              padding: "32px",
-              borderRadius: "14px",
+              color: 'rgb(129 125 162)',
+              fontFamily: 'Roboto Mono',
+              padding: '32px',
+              borderRadius: '14px',
             }}
           >
-            {program.code.join("\n")}
+            {program.code.join('\n')}
           </SyntaxHighlighter>
         </>
       ))}
     </>
-  )
+  );
 }
 
 const cardProperties: Array<keyof Entry> = [
-  "example",
-  "link",
-  "formula",
-  "maple",
-  "mathematica",
-  "program",
-  "xref",
-  "ext",
-  "comment",
-  "reference",
-]
+  'example',
+  'link',
+  'formula',
+  'maple',
+  'mathematica',
+  'program',
+  'xref',
+  'ext',
+  'comment',
+  'reference',
+];
 
 export default function Card({
   card,
@@ -274,21 +274,21 @@ export default function Card({
   defaultExpanded,
   setIsRedirecting,
 }: {
-  card: Entry
-  query?: string
-  defaultExpanded?: boolean
-  setIsRedirecting?: (isRedirecting: boolean) => void
+  card: Entry;
+  query?: string;
+  defaultExpanded?: boolean;
+  setIsRedirecting?: (isRedirecting: boolean) => void;
 }) {
-  const [dropped, setDropped] = useState(defaultExpanded || false)
+  const [dropped, setDropped] = useState(defaultExpanded || false);
 
   const cardSize = cardProperties.reduce(
     (sum, parameter) =>
       sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
     0
-  )
-  const defaultDropped = cardSize < 20 || defaultExpanded
+  );
+  const defaultDropped = cardSize < 20 || defaultExpanded;
 
-  const id = `A${String(card.number).padStart(6, "0")}`
+  const id = `A${String(card.number).padStart(6, '0')}`;
 
   return (
     <Container>
@@ -301,20 +301,20 @@ export default function Card({
             <ID>{id}</ID>
             <ProgIcons>
               {card.program && (
-                <HoverOver message="Has code implementation">
-                  <ProgIcon src="/code.svg" alt="Has code implementation" />
+                <HoverOver message='Has code implementation'>
+                  <ProgIcon src='/code.svg' alt='Has code implementation' />
                 </HoverOver>
               )}
               {card.maple && (
-                <HoverOver message="Has Maple implementation">
-                  <ProgIcon src={"/maple.svg"} alt="Has Maple implementation" />
+                <HoverOver message='Has Maple implementation'>
+                  <ProgIcon src={'/maple.svg'} alt='Has Maple implementation' />
                 </HoverOver>
               )}
               {card.mathematica && (
-                <HoverOver message="Has Mathematica implementation">
+                <HoverOver message='Has Mathematica implementation'>
                   <ProgIcon
-                    src={"/mathmatica.svg"}
-                    alt="Has Mathematica implementation"
+                    src={'/mathmatica.svg'}
+                    alt='Has Mathematica implementation'
                   />
                 </HoverOver>
               )}
@@ -330,7 +330,7 @@ export default function Card({
         {dropped && card.example && (
           <DropSection
             icon={faPresentationScreen}
-            name={"Example"}
+            name={'Example'}
             defaultDropped
           >
             {card.example?.map((line, index) => (
@@ -341,7 +341,7 @@ export default function Card({
         {dropped && card.comment && (
           <DropSection
             icon={faComment}
-            name={"Comment"}
+            name={'Comment'}
             defaultDropped={defaultDropped}
           >
             {card.comment?.map((line, index) => (
@@ -352,7 +352,7 @@ export default function Card({
         {dropped && card.formula && (
           <DropSection
             icon={faFunction}
-            name={"Formula"}
+            name={'Formula'}
             defaultDropped={defaultDropped}
           >
             <Monospace>{card.formula}</Monospace>
@@ -361,7 +361,7 @@ export default function Card({
         {dropped && card.program && (
           <DropSection
             icon={faBinary}
-            name={"Programs"}
+            name={'Programs'}
             defaultDropped={defaultDropped}
           >
             <CodeDisplay
@@ -385,18 +385,18 @@ export default function Card({
         {dropped && card.link && (
           <DropSection
             icon={faLink}
-            name={"Links"}
+            name={'Links'}
             defaultDropped={defaultDropped}
           >
             <Monospace
-              dangerouslySetInnerHTML={{ __html: card.link.join("\n") }}
+              dangerouslySetInnerHTML={{ __html: card.link.join('\n') }}
             />
           </DropSection>
         )}
         {dropped && card.xref && (
           <DropSection
             icon={faAsterisk}
-            name={"Cross References"}
+            name={'Cross References'}
             defaultDropped={defaultDropped}
           >
             <Monospace>{card.xref}</Monospace>
@@ -405,7 +405,7 @@ export default function Card({
         {dropped && card.ext && (
           <DropSection
             icon={faAnglesRight}
-            name={"Extensions"}
+            name={'Extensions'}
             defaultDropped={defaultDropped}
           >
             <Monospace>{card.ext}</Monospace>
@@ -413,7 +413,7 @@ export default function Card({
         )}
         <DropSection
           icon={faCircleInfo}
-          name={"Meta Information"}
+          name={'Meta Information'}
           defaultDropped={defaultDropped}
         >
           {card.id && <Monospace>Formerly known as {card.id}</Monospace>}
@@ -428,5 +428,5 @@ export default function Card({
         <ExpandChevron icon={faChevronDown} dropped={dropped.toString()} />
       </Expander>
     </Container>
-  )
+  );
 }

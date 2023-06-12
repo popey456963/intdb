@@ -1,11 +1,11 @@
 const theme = {
   colors: {
-    primary: "#5a57f4",
-    black: "#121129",
-    greyText: "#c6c5d1",
-    border: "#EDEDED",
-    coreGrey: "#74767d",
-    lightGrey: "#f9f9f9",
+    primary: '#5a57f4',
+    black: '#121129',
+    greyText: '#9C8EB6',
+    border: '#EDEDED',
+    coreGrey: '#9C8EB6',
+    lightGrey: '#f9f9f9',
   },
   fonts: {
     primaryFont: `font-family: erbaum, sans-serif;`,
@@ -34,6 +34,6 @@ const theme = {
         width: 100%;
       }`,
   },
-}
+};
 
-export default theme
+export default theme;
