@@ -46,6 +46,10 @@ const Content = styled.div<{ dropped: boolean }>`
   overflow: hidden;
   height: ${(props) => (props.dropped ? "fit-content" : "0px")};
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    margin: ${(props) => (props.dropped ? "13px 0px" : "0px")};
+  }
 `
 
 type Props = {
