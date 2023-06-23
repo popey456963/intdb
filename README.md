@@ -103,7 +103,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Alexander Craggs - intdb@femto.dev
+Alexander Craggs - intdb@femto.dev  
 Tom Emmerson - tom@carefully.codes
 
 Project Link: [https://github.com/popey456963/intdb](https://github.com/popey456963/intdb)
