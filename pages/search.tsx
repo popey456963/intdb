@@ -123,7 +123,7 @@ export default function Home({ initialData, initialQuery }: any): any {
   return (
     <Container>
       <Head>
-        <title>{query + ' :: intdb'}</title>
+        <title>{query + ' - IntDB'}</title>
         <meta
           name='description'
           content={
