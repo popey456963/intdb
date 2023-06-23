@@ -5,7 +5,7 @@ const Container = styled.div<{ verticalAlign?: boolean }>`
   display: flex;
   justify-content: center;
   margin: 0px 40px;
-  @media (max-width: 380px) {
+  @media (max-width: 768px) {
     margin: 0px 15px;
   }
   align-items: center;
