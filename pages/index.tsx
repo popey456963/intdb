@@ -82,7 +82,7 @@ export default function Home(): any {
   return (
     <Container>
       <Head>
-        <title>Search :: intdb</title>
+        <title>Search - IntDB</title>
         <meta
           name='description'
           content={
