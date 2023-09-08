@@ -23,6 +23,7 @@ import {
 } from "react-syntax-highlighter/dist/cjs/styles/hljs"
 import { getHighlightLanguage, parseProgramString } from "utils/program"
 import HoverOver from "./HoverOver"
+import RenderText from "./RenderText"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -345,7 +346,9 @@ export default function Card({
             defaultDropped={defaultDropped}
           >
             {card.comment?.map((line, index) => (
-              <Monospace key={index}>{line}</Monospace>
+              <Monospace key={index}>
+                <RenderText text={line} />
+              </Monospace>
             ))}
           </DropSection>
         )}
