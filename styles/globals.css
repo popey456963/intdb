@@ -7,10 +7,7 @@ body {
   font-family: Roboto, sans-serif;
   color: #121129;
 
-  background-image: url('/background.webp');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
+  background: #F5F5F5;
 
   overflow-y: scroll;
 }

@@ -30,7 +30,7 @@ const Container = styled.div`
   border-radius: 14px;
   background: white;
   overflow: hidden;
-  box-shadow: 0px 6px 20px #0000000d;
+  // box-shadow: 0px 6px 20px #0000000d;
 `
 
 const Content = styled.div`
