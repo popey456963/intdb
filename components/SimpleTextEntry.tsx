@@ -26,11 +26,12 @@ type Props = {
 export default function SimpleTextEntry({
     contents
 }: Props) {
-    return (
+    return <div>{
         contents.map((line, index) => (
             <Monospace key={index}>
                 <RenderText text={line} />
             </Monospace>
         ))
-    )
+    }</div>
+
 }

@@ -1,6 +1,19 @@
+import sanitizeHtml from 'sanitize-html';
+
 interface Props {
   text: string
 }
+
+// const options: HTMLReactParserOptions = {
+//   replace(domNode) {
+//     if (domNode instanceof Element && domNode.attribs) {
+//       console.log(domNode)
+//       return false
+//     }
+
+//     return false
+//   }
+// }
 
 export default function RenderText({ text }: Props) {
   const delimiter = /(_[A-z \.]{1,100}?_)/gi
@@ -20,7 +33,14 @@ export default function RenderText({ text }: Props) {
           )
         }
 
-        return word
+        return <span key={word} dangerouslySetInnerHTML={{
+          __html: sanitizeHtml(word, {
+            allowedTags: ['a'],
+            allowedAttributes: {
+              'a': ['href']
+            },
+          })
+        }} />
       })}
     </>
   )

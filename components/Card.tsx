@@ -7,7 +7,7 @@ import {
   faFunction,
   faBinary,
   faLink,
-  faAnglesRight,
+  faClock,
   faCircleInfo,
 } from "@fortawesome/pro-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -386,9 +386,7 @@ export default function Card({
             name={"Links"}
             defaultDropped={defaultDropped}
           >
-            <Monospace
-              dangerouslySetInnerHTML={{ __html: card.link.join("\n") }}
-            />
+            <SimpleTextEntry contents={card.link} />
           </DropSection>
         )}
         {dropped && card.xref && (
@@ -402,7 +400,7 @@ export default function Card({
         )}
         {dropped && card.ext && (
           <DropSection
-            icon={faAnglesRight}
+            icon={faClock}
             name={"Extensions"}
             defaultDropped={defaultDropped}
           >
