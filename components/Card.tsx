@@ -36,7 +36,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   padding: 23px 23px 0px 23px;
-  cursor: pointer;
 `
 
 const Misc = styled.div`
@@ -296,40 +295,41 @@ export default function Card({
 
   return (
     <Container>
-      <Link
-        href={`/${id}`}
-        onClick={() => setIsRedirecting && setIsRedirecting(true)}
-      >
-        <Content>
-          <Misc>
+      <Content>
+        <Misc>
+          <Link
+            href={`/${id}`}
+            onClick={() => setIsRedirecting && setIsRedirecting(true)}
+          >
             <ID>{id}</ID>
-            <ProgIcons>
-              {card.program && (
-                <HoverOver message="Has code implementation">
-                  <ProgIcon src="/code.svg" alt="Has code implementation" />
-                </HoverOver>
-              )}
-              {card.maple && (
-                <HoverOver message="Has Maple implementation">
-                  <ProgIcon src={"/maple.svg"} alt="Has Maple implementation" />
-                </HoverOver>
-              )}
-              {card.mathematica && (
-                <HoverOver message="Has Mathematica implementation">
-                  <ProgIcon
-                    src={"/mathmatica.svg"}
-                    alt="Has Mathematica implementation"
-                  />
-                </HoverOver>
-              )}
-            </ProgIcons>
-          </Misc>
-          <Title>{card.name}</Title>
-          <Values>
-            <DataValues data={card.data} query={query} />
-          </Values>
-        </Content>
-      </Link>
+          </Link>
+          <ProgIcons>
+            {card.program && (
+              <HoverOver message="Has code implementation">
+                <ProgIcon src="/code.svg" alt="Has code implementation" />
+              </HoverOver>
+            )}
+            {card.maple && (
+              <HoverOver message="Has Maple implementation">
+                <ProgIcon src={"/maple.svg"} alt="Has Maple implementation" />
+              </HoverOver>
+            )}
+            {card.mathematica && (
+              <HoverOver message="Has Mathematica implementation">
+                <ProgIcon
+                  src={"/mathmatica.svg"}
+                  alt="Has Mathematica implementation"
+                />
+              </HoverOver>
+            )}
+          </ProgIcons>
+        </Misc>
+        <Title>{card.name}</Title>
+        <Values>
+          <DataValues data={card.data} query={query} />
+        </Values>
+      </Content>
+
       <FullContent dropped={dropped}>
         {dropped && card.comment && (
           <DropSection
