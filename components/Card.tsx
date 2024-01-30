@@ -24,6 +24,7 @@ import {
 import { getHighlightLanguage, parseProgramString } from "utils/program"
 import HoverOver from "./HoverOver"
 import RenderText from "./RenderText"
+import SimpleTextEntry from "./SimpleTextEntry"
 
 const Container = styled.div`
   border: 1px solid ${(props) => props.theme.colors.border};
@@ -114,7 +115,7 @@ const Monospace = styled.pre`
   }
 `
 
-const ExpandChevron = styled(FontAwesomeIcon)<{ dropped: string }>`
+const ExpandChevron = styled(FontAwesomeIcon) <{ dropped: string }>`
   transition: all 0.3s;
   ${(props) => props.dropped === "true" && `transform: rotate(180deg);`}
 `
@@ -272,22 +273,21 @@ const cardProperties: Array<keyof Entry> = [
 export default function Card({
   card,
   query,
-  defaultExpanded,
+  mainEntry,
   setIsRedirecting,
 }: {
   card: Entry
   query?: string
-  defaultExpanded?: boolean
+  mainEntry?: boolean
   setIsRedirecting?: (isRedirecting: boolean) => void
 }) {
-  const [dropped, setDropped] = useState(defaultExpanded || false)
+  const [dropped, setDropped] = useState(mainEntry || false)
 
-  const cardSize = cardProperties.reduce(
-    (sum, parameter) =>
-      sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
+  const totalLines = cardProperties.reduce(
+    (sum, parameter) => sum + (card[parameter] ? (card[parameter] as any)?.length : 0),
     0
   )
-  const defaultDropped = cardSize < 20 || defaultExpanded
+  const defaultDropped = totalLines < 20 || (mainEntry && totalLines < 100)
 
   const id = `A${String(card.number).padStart(6, "0")}`
 
@@ -328,28 +328,22 @@ export default function Card({
         </Content>
       </Link>
       <FullContent dropped={dropped}>
-        {dropped && card.example && (
-          <DropSection
-            icon={faPresentationScreen}
-            name={"Example"}
-            defaultDropped
-          >
-            {card.example?.map((line, index) => (
-              <Monospace key={index}>{line}</Monospace>
-            ))}
-          </DropSection>
-        )}
         {dropped && card.comment && (
           <DropSection
             icon={faComment}
             name={"Comment"}
             defaultDropped={defaultDropped}
           >
-            {card.comment?.map((line, index) => (
-              <Monospace key={index}>
-                <RenderText text={line} />
-              </Monospace>
-            ))}
+            <SimpleTextEntry contents={card.comment} />
+          </DropSection>
+        )}
+        {dropped && card.example && (
+          <DropSection
+            icon={faPresentationScreen}
+            name={"Example"}
+            defaultDropped={defaultDropped}
+          >
+            <SimpleTextEntry contents={card.example} />
           </DropSection>
         )}
         {dropped && card.formula && (
@@ -358,7 +352,7 @@ export default function Card({
             name={"Formula"}
             defaultDropped={defaultDropped}
           >
-            <Monospace>{card.formula}</Monospace>
+            <SimpleTextEntry contents={card.formula} />
           </DropSection>
         )}
         {dropped && card.program && (
@@ -380,9 +374,7 @@ export default function Card({
             name={`References (${card.references})`}
             defaultDropped={defaultDropped}
           >
-            {card.reference?.map((line, index) => (
-              <Monospace key={index}>{line}</Monospace>
-            ))}
+            <SimpleTextEntry contents={card.reference} />
           </DropSection>
         )}
         {dropped && card.link && (
@@ -402,7 +394,7 @@ export default function Card({
             name={"Cross References"}
             defaultDropped={defaultDropped}
           >
-            <Monospace>{card.xref}</Monospace>
+            <SimpleTextEntry contents={card.xref} />
           </DropSection>
         )}
         {dropped && card.ext && (
@@ -411,7 +403,7 @@ export default function Card({
             name={"Extensions"}
             defaultDropped={defaultDropped}
           >
-            <Monospace>{card.ext}</Monospace>
+            <SimpleTextEntry contents={card.ext} />
           </DropSection>
         )}
         <DropSection
@@ -421,7 +413,7 @@ export default function Card({
         >
           {card.id && <Monospace>Formerly known as {card.id}</Monospace>}
           <Monospace>Keyword: {card.keyword}</Monospace>
-          <Monospace>Author: {card.author}</Monospace>
+          <Monospace><RenderText text={`Author: ${card.author}`} /></Monospace>
           <Monospace>Updated: {card.time}</Monospace>
           <Monospace>Created: {card.created}</Monospace>
           <Monospace>Revision: {card.revision}</Monospace>

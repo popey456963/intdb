@@ -3,8 +3,8 @@ interface Props {
 }
 
 export default function RenderText({ text }: Props) {
-  const delimiter = /(_.{1,100}?_)/gi
-  const getName = /_(.{1,100}?)_/i
+  const delimiter = /(_[A-z \.]{1,100}?_)/gi
+  const getName = /_([A-z \.]{1,100}?)_/i
 
   return (
     <>

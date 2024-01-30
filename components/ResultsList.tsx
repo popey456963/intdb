@@ -49,7 +49,7 @@ export default function ResultsList({
             card={entry}
             key={entry.number}
             query={query}
-            defaultExpanded={results.length === 1}
+            mainEntry={results.length === 1}
             setIsRedirecting={setIsRedirecting}
           />
         ))}
