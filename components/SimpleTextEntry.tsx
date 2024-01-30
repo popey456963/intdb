@@ -8,7 +8,6 @@ const Monospace = styled.pre`
   white-space: -moz-pre-wrap;
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
-  word-wrap: break-word;
   font-family: "roboto mono";
   margin: 2px 0px;
 

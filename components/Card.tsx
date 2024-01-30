@@ -110,6 +110,9 @@ const Monospace = styled.pre`
   font-family: "roboto mono";
   margin: 2px 0px;
 
+  padding-left: 1em;
+  text-indent: -1em;
+
   a {
     color: ${(props) => props.theme.colors.primary};
   }
